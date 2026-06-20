@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple vs. Samsung — The Battle for Smartphone Supremacy | MKTG 416</title>
+  <style>
+    :root {
+      /* PORCELAIN light theme */
+      --bg: #FFFEFC;
+      --bg2: #F6F3EC;
+      --panel: #FFFFFF;
+      --panel-soft: #FBFAF6;
+      --line: rgba(31, 28, 22, 0.14);
+      --line-soft: rgba(31, 28, 22, 0.08);
+      --text: #1f1c16;
+      --muted: #54504a;
+      --soft: #8a857c;
+      --ink: #2a2620;
+
+      /* accents */
+      --teal: #0f8a8a;
+      --green: #2f9e57;
+      --gold: #c8861c;
+      --coral: #d75f4c;
+      --violet: #6f5bd0;
+      --apple: #4a4a4f;     /* Apple slate */
+      --samsung: #1655b8;   /* Samsung blue */
+
+      --shadow: 0 18px 44px rgba(31, 28, 22, 0.10);
+      --shadow-sm: 0 6px 18px rgba(31, 28, 22, 0.07);
+      --radius: 12px;
+      font-family: "Fraunces", "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    body {
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% 0%, rgba(22,85,184,.06), transparent 30%),
+        radial-gradient(circle at 90% 8%, rgba(200,134,28,.07), transparent 28%),
+        radial-gradient(circle at 80% 100%, rgba(15,138,138,.05), transparent 30%),
+        linear-gradient(150deg, #FFFEFC 0%, #F6F3EC 60%, #FFFEFC 100%);
+      font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button { font: inherit; color: inherit; }
+    .deck { height: 100vh; display: grid; grid-template-rows: 1fr auto; }
+    .slides { position: relative; min-height: 0; }
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(22px, 3.6vw, 52px);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(30px) scale(.99);
+      transition: opacity .28s ease, transform .28s ease;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0) scale(1);
+    }
+
+    .slide-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+    .kicker {
+      margin: 0 0 8px;
+      color: var(--teal);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.01em; font-family: "Fraunces", Georgia, serif; }
+    h1 { font-size: clamp(34px, 5.4vw, 70px); line-height: .98; max-width: 1000px; font-weight: 600; }
+    h2 { font-size: clamp(26px, 3.4vw, 46px); line-height: 1.02; font-weight: 600; }
+    h3 { font-size: clamp(17px, 1.7vw, 23px); font-weight: 600; }
+    p { margin: 0; color: var(--muted); font-size: clamp(15px, 1.25vw, 18.5px); line-height: 1.5; }
+    .slide-no { color: var(--soft); font-weight: 700; font-size: 14px; white-space: nowrap; font-family: "JetBrains Mono", monospace; }
+
+    .content { min-height: 0; display: grid; gap: 16px; align-content: center; overflow-y: auto; }
+    .two { grid-template-columns: 1fr 1fr; align-items: stretch; }
+    .three { grid-template-columns: repeat(3, 1fr); }
+    .four { grid-template-columns: repeat(4, 1fr); }
+    .split-wide { grid-template-columns: 1.05fr .95fr; }
+    .split-lead { grid-template-columns: 1.25fr .75fr; }
+    .grid { display: grid; gap: 14px; }
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius);
+      padding: clamp(15px, 1.8vw, 24px);
+      min-width: 0;
+    }
+    .panel.soft { background: var(--panel-soft); }
+    .panel h3 { margin-bottom: 9px; }
+    .panel p + p { margin-top: 10px; }
+    .accent-teal { border-top: 3px solid var(--teal); }
+    .accent-green { border-top: 3px solid var(--green); }
+    .accent-gold { border-top: 3px solid var(--gold); }
+    .accent-coral { border-top: 3px solid var(--coral); }
+    .accent-violet { border-top: 3px solid var(--violet); }
+    .accent-apple { border-top: 3px solid var(--apple); }
+    .accent-samsung { border-top: 3px solid var(--samsung); }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .pill.tag { background: rgba(15,138,138,.08); border-color: rgba(15,138,138,.3); color: var(--teal); }
+    .big-number {
+      display: block;
+      color: var(--text);
+      font-size: clamp(30px, 4.4vw, 56px);
+      line-height: 1;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-family: "Fraunces", Georgia, serif;
+    }
+    .bn-apple { color: var(--apple); }
+    .bn-samsung { color: var(--samsung); }
+    .bn-gold { color: var(--gold); }
+    .bn-teal { color: var(--teal); }
+    .label { color: var(--muted); font-size: 14.5px; line-height: 1.35; }
+    .list { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
+    .list li {
+      position: relative;
+      padding-left: 22px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: clamp(14.5px, 1.15vw, 17.5px);
+    }
+    .list li::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .list.green li::before { background: var(--green); }
+    .list.gold li::before { background: var(--gold); }
+    .list.coral li::before { background: var(--coral); }
+    .list.apple li::before { background: var(--apple); }
+    .list.samsung li::before { background: var(--samsung); }
+    .list li strong { color: var(--text); font-weight: 600; }
+
+    .code {
+      font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      background: #20242b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #e8ecf1;
+      font-size: clamp(12px, 1vw, 14.5px);
+      line-height: 1.55;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .code .tok-kw { color: #d98ad3; }
+    .code .tok-type { color: #6fc3df; }
+    .code .tok-fn { color: #8ed98e; }
+    .code .tok-str { color: #e3c178; }
+    .code .tok-num { color: #d99a6f; }
+    .code .tok-com { color: #7e8a99; font-style: italic; }
+    .code .tok-self { color: #6fa8df; }
+
+    .define {
+      border-left: 3px solid var(--teal);
+      background: var(--panel-soft);
+      border-radius: 0 8px 8px 0;
+      padding: 11px 14px;
+      margin-top: 4px;
+    }
+    .define b { color: var(--text); font-weight: 600; }
+    .define span { color: var(--muted); }
+
+    /* pipeline / steps */
+    .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: stretch; }
+    .step {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+      border-radius: 10px;
+      padding: 14px;
+      min-height: 110px;
+    }
+    .step strong { display: block; margin-bottom: 7px; color: var(--text); font-weight: 600; font-size: 15.5px; }
+    .step span { color: var(--muted); font-size: 13.5px; line-height: 1.38; }
+    .step .num { color: var(--teal); font-weight: 700; font-family: "JetBrains Mono", monospace; font-size: 12px; }
+
+    .table { width: 100%; border-collapse: collapse; color: var(--muted); font-size: clamp(13.5px, 1.05vw, 16.5px); }
+    .table th, .table td { text-align: left; border-bottom: 1px solid var(--line); padding: 11px 10px; vertical-align: top; }
+    .table th { color: var(--text); font-weight: 600; font-family: "Fraunces", Georgia, serif; }
+    .table tr:last-child td { border-bottom: none; }
+    .table td strong { color: var(--text); }
+    .col-apple { color: var(--apple); font-weight: 600; }
+    .col-samsung { color: var(--samsung); font-weight: 600; }
+
+    /* ===== interactive program area ===== */
+    .app-shell {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+    }
+    .app-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-soft);
+      flex-wrap: wrap;
+    }
+    .app-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .app-dot.r { background: #e0655a; }
+    .app-dot.y { background: #d7a93a; }
+    .app-dot.g { background: #5aa564; }
+    .app-title {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12.5px;
+      color: var(--soft);
+      margin-left: 4px;
+    }
+    .app-tabs { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+    .tab-btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all .18s ease;
+    }
+    .tab-btn:hover { border-color: var(--teal); }
+    .tab-btn.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+    .app-body { padding: clamp(12px, 1.6vw, 20px); min-height: 0; overflow: auto; }
+    .run-row {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .action-btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+      border-radius: 999px;
+      padding: 9px 16px;
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      transition: all .18s ease;
+    }
+    .action-btn:hover { border-color: var(--teal); transform: translateY(-1px); }
+    .action-btn.primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .action-btn.primary:hover { background: #0c7676; }
+    .action-btn.apple { background: var(--apple); color: #fff; border-color: var(--apple); }
+    .action-btn.samsung { background: var(--samsung); color: #fff; border-color: var(--samsung); }
+    .status-strip {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-soft);
+      padding: 10px 13px;
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 14px;
+      min-height: 42px;
+    }
+    .status-strip strong { color: var(--text); font-weight: 600; }
+
+    /* sliders */
+    .slider-grid { display: grid; gap: 14px; }
+    .slider-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 84px;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .slider-row label { font-weight: 600; color: var(--text); }
+    .slider-row .val { font-family: "JetBrains Mono", monospace; text-align: right; color: var(--teal); font-weight: 700; }
+    input[type="range"] { width: 100%; accent-color: var(--teal); height: 4px; }
+    input[type="range"].apple { accent-color: var(--apple); }
+    input[type="range"].samsung { accent-color: var(--samsung); }
+
+    /* 4Ps mix board */
+    .mix-board {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .mix-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 13px 15px;
+      background: var(--panel-soft);
+      transition: all .25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .mix-card .pname { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+    .mix-card .pdesc { color: var(--muted); font-size: 13.5px; line-height: 1.4; }
+    .mix-card.active {
+      border-color: var(--teal);
+      background: rgba(15,138,138,.07);
+      box-shadow: 0 0 0 2px rgba(15,138,138,.18);
+      transform: translateY(-3px);
+    }
+    .mix-card .ptag {
+      position: absolute; top: 12px; right: 13px;
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      color: var(--soft); font-weight: 700;
+    }
+
+    /* SVG */
+    svg.viz { width: 100%; height: 100%; overflow: visible; display: block; }
+    .axis { stroke: rgba(31,28,22,.28); stroke-width: 1; }
+    .gridline { stroke: rgba(31,28,22,.08); stroke-width: 1; }
+    .axis-label { fill: var(--muted); font-size: 12px; font-family: "Outfit", sans-serif; }
+    .axis-title { fill: var(--soft); font-size: 12.5px; font-weight: 600; }
+
+    .chart-card { display: grid; grid-template-rows: auto 1fr; min-height: 340px; }
+    .toggles { display: flex; gap: 7px; flex-wrap: wrap; }
+    .toggle {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all .18s ease;
+    }
+    .toggle.active { background: rgba(15,138,138,.12); border-color: var(--teal); color: var(--teal); }
+
+    .tooltip {
+      position: fixed;
+      display: none;
+      pointer-events: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 9px 11px;
+      color: var(--text);
+      font-size: 12.5px;
+      box-shadow: var(--shadow);
+      z-index: 50;
+      max-width: 240px;
+    }
+    .tooltip strong { color: var(--text); }
+
+    .viz-stage {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      padding: 14px;
+      min-height: 300px;
+      position: relative;
+    }
+
+    /* result chips */
+    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+    .result-box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: var(--panel);
+      text-align: center;
+    }
+    .result-box .rv { display: block; font-family: "Fraunces", Georgia, serif; font-size: clamp(22px, 2.6vw, 34px); font-weight: 600; color: var(--text); line-height: 1; margin-bottom: 5px; }
+    .result-box .rl { color: var(--muted); font-size: 12.5px; line-height: 1.3; }
+
+    /* segment bars */
+    .seg-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; margin-bottom: 11px; }
+    .seg-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .seg-track { height: 26px; border-radius: 6px; background: rgba(31,28,22,.06); overflow: hidden; position: relative; display: flex; }
+    .seg-fill { height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 12px; font-weight: 700; color: #fff; transition: width .6s cubic-bezier(.4,0,.2,1); white-space: nowrap; font-family: "JetBrains Mono", monospace; }
+    .seg-fill.apple { background: var(--apple); }
+    .seg-fill.samsung { background: var(--samsung); }
+
+    /* quote */
+    .quote {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(20px, 2.4vw, 32px);
+      line-height: 1.28;
+      color: var(--text);
+      font-weight: 500;
+      font-style: italic;
+    }
+    .quote-by { margin-top: 14px; color: var(--soft); font-size: 15px; font-style: normal; font-family: "Outfit", sans-serif; }
+
+    /* timeline */
+    .timeline { display: grid; gap: 0; }
+    .tl-item { display: grid; grid-template-columns: 78px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line-soft); }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-year { font-family: "JetBrains Mono", monospace; font-weight: 700; color: var(--teal); font-size: 15px; }
+    .tl-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+    .tl-body span { color: var(--muted); font-size: 14.5px; line-height: 1.4; }
+
+    .takeaway {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      background: var(--panel-soft);
+      padding: 13px 16px;
+    }
+    .takeaway b { color: var(--text); font-weight: 600; }
+    .takeaway p { color: var(--muted); }
+
+    .legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; color: var(--muted); }
+    .legend-dot { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-dot i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+    /* controls bar */
+    .controls {
+      height: 64px;
+      border-top: 1px solid var(--line);
+      background: var(--panel-soft);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 0 clamp(16px, 3vw, 38px);
+    }
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text);
+      transition: all .18s ease;
+    }
+    .nav-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .progress {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(31,28,22,.1);
+      overflow: hidden;
+    }
+    .progress span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--samsung), var(--teal), var(--gold)); transition: width .3s ease; }
+    .counter { color: var(--muted); font-weight: 700; min-width: 64px; text-align: right; font-family: "JetBrains Mono", monospace; font-size: 14px; }
+    .dots { display: flex; gap: 5px; justify-content: center; margin-top: 9px; flex-wrap: wrap; }
+    .dot-nav {
+      width: 7px; height: 7px; border: 0; padding: 0;
+      border-radius: 50%;
+      background: rgba(31,28,22,.22);
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+    .dot-nav.active { background: var(--teal); transform: scale(1.3); }
+
+    @media (max-width: 950px) {
+      body { overflow: auto; }
+      html, body, .deck { min-height: 100%; height: auto; }
+      .slides { min-height: calc(100vh - 64px); }
+      .slide { position: relative; display: none; min-height: calc(100vh - 64px); }
+      .slide.active { display: grid; }
+      .two, .three, .four, .split-wide, .split-lead, .pipeline, .mix-board { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: 1fr; }
+      .slide-head { flex-direction: column; }
+      .slider-row { grid-template-columns: 1fr; gap: 4px; }
+      .slider-row .val { text-align: left; }
+      .controls { position: sticky; bottom: 0; }
+      .seg-row { grid-template-columns: 1fr; }
+    }
+    @media (max-height: 720px) {
+      .slide { padding: 18px 26px; gap: 12px; }
+      .big-number { font-size: clamp(26px, 3.6vw, 42px); }
+    }
+
+    /* ===== added components for expanded deck ===== */
+    .ladder { display:grid; gap:8px; }
+    .rung { display:grid; grid-template-columns:160px 1fr; gap:12px; align-items:center; border:1px solid var(--line); border-radius:9px; padding:11px 13px; background:var(--panel-soft); cursor:pointer; transition:all .25s ease; }
+    .rung:hover { border-color:var(--teal); }
+    .rung.active { border-color:var(--teal); background:rgba(15,138,138,.08); box-shadow:0 0 0 2px rgba(15,138,138,.16); transform:translateX(4px); }
+    .rung .rname { font-weight:600; color:var(--text); font-size:14.5px; }
+    .rung .rex { color:var(--muted); font-size:13.5px; line-height:1.35; }
+    .rung .rtag { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--soft); }
+
+    .matrix2 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .quad { border:1px solid var(--line); border-radius:10px; padding:13px; min-height:104px; background:var(--panel); transition:all .25s ease; }
+    .quad.hot { border-color:var(--gold); background:rgba(200,134,28,.08); box-shadow:0 0 0 2px rgba(200,134,28,.16); }
+    .quad h4 { margin:0 0 6px; font-family:"Fraunces",Georgia,serif; font-size:15.5px; color:var(--text); }
+    .quad p { font-size:13px; }
+
+    .chip-pick { display:flex; gap:8px; flex-wrap:wrap; }
+    .chip {
+      border:1px solid var(--line); border-radius:999px; padding:8px 14px; cursor:pointer;
+      background:var(--panel); color:var(--muted); font-size:13.5px; font-weight:600; transition:all .18s ease;
+    }
+    .chip:hover { border-color:var(--teal); }
+    .chip.on { background:var(--teal); border-color:var(--teal); color:#fff; }
+    .chip.on.apple-c { background:var(--apple); border-color:var(--apple); }
+    .chip.on.samsung-c { background:var(--samsung); border-color:var(--samsung); }
+
+    .gauge-wrap { display:grid; gap:6px; }
+    .gauge { height:30px; border-radius:8px; background:rgba(31,28,22,.06); overflow:hidden; position:relative; }
+    .gauge-fill { height:100%; display:flex; align-items:center; padding:0 10px; color:#fff; font-weight:700; font-size:12.5px; font-family:"JetBrains Mono",monospace; transition:width .5s cubic-bezier(.4,0,.2,1); white-space:nowrap; }
+
+    .orient-track { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+    .orient-step { border:1px solid var(--line); border-radius:9px; padding:11px; text-align:center; cursor:pointer; background:var(--panel); transition:all .25s ease; }
+    .orient-step:hover { border-color:var(--teal); }
+    .orient-step.active { border-color:var(--teal); background:rgba(15,138,138,.1); transform:translateY(-3px); box-shadow:var(--shadow-sm); }
+    .orient-step .on-name { font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:15px; color:var(--text); }
+    .orient-step .on-sub { font-size:11.5px; color:var(--soft); margin-top:3px; }
+
+    .kpi-inline { display:flex; gap:20px; flex-wrap:wrap; margin-top:6px; }
+    .kpi-inline div { font-size:13px; color:var(--muted); }
+    .kpi-inline b { display:block; font-family:"Fraunces",Georgia,serif; font-size:22px; color:var(--text); font-weight:600; }
+
+    .toggle-pill-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+
+    .build-out { border:1px dashed var(--line); border-radius:10px; padding:13px 15px; background:var(--panel-soft); min-height:60px; color:var(--muted); line-height:1.5; font-size:14.5px; }
+    .build-out strong { color:var(--text); }
+    .build-out .pos-line { font-family:"Fraunces",Georgia,serif; font-size:17px; color:var(--text); font-style:italic; line-height:1.4; }
+
+    .mini-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <main class="slides" id="slides">
+
+      <!-- ===== 01 TITLE ===== -->
+      <section class="slide active">
+        <header class="slide-head">
+          <div>
+            <p class="kicker">MKTG 416 · Global Marketing Strategy · Chapter 1 Case Study</p>
+            <h1>Apple vs. Samsung: The Battle for Smartphone Supremacy</h1>
+            <div class="hero-meta">
+              <span class="pill">Naomie Bambara</span>
+              <span class="pill tag">Case 1-3 · Baack &amp; Baack, 2nd ed.</span>
+              <span class="pill tag">Introduction to International Marketing</span>
+            </div>
+          </div>
+          <div class="slide-no">01</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>What this presentation does</h3>
+            <p>It walks through the whole of Chapter 1 — every key term, framework, and figure — and connects each idea to the Apple-versus-Samsung smartphone rivalry.</p>
+            <p>It answers both weekly discussion questions and backs the analysis with seven live, runnable programs embedded directly in the slides, so the case becomes something you can explore rather than just read.</p>
+          </div>
+          <div class="grid three" style="align-content:start; gap:12px;">
+            <div class="panel"><span class="big-number bn-apple">$199</span><span class="label">US iPhone 5 on a two-year contract</span></div>
+            <div class="panel"><span class="big-number bn-samsung">~$100</span><span class="label">a Samsung Android phone in India</span></div>
+            <div class="panel"><span class="big-number bn-gold">7</span><span class="label">interactive programs you can run in these slides</span></div>
+            <div class="panel" style="grid-column: span 3;">
+              <h3 style="margin-bottom:6px;">How to use these slides</h3>
+              <p>Arrow keys or the dots below to move. Slides marked <b style="color:var(--green)">Live Demo</b> contain a program — press its buttons and drag its sliders to explore the chapter directly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 02 ROADMAP ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Roadmap</p><h2>What we will cover</h2></div>
+          <div class="slide-no">02</div>
+        </header>
+        <div class="content three">
+          <div class="panel accent-teal">
+            <h3>Part A — Foundations</h3>
+            <ul class="list">
+              <li>Types of global business &amp; company orientation</li>
+              <li>The essence of marketing &amp; the four-P mix</li>
+              <li>Needs, wants, demand</li>
+              <li>Segmentation, targeting, positioning</li>
+            </ul>
+          </div>
+          <div class="panel accent-gold">
+            <h3>Part B — Going international</h3>
+            <ul class="list gold">
+              <li>Marketing in an international context</li>
+              <li>The four drivers of globalization</li>
+              <li>The five complexity factors</li>
+              <li>Standardization vs. adaptation</li>
+              <li>Sustainability &amp; bottom-of-the-pyramid</li>
+              <li>Ethics: relativism vs. justice</li>
+            </ul>
+          </div>
+          <div class="panel accent-samsung">
+            <h3>Part C — The case &amp; demos</h3>
+            <ul class="list samsung">
+              <li>The Apple–Samsung rivalry</li>
+              <li>Q1: the iPhone 5C pricing decision</li>
+              <li>Q2: Samsung's global strategy</li>
+              <li><strong>7 live programs</strong> spread through the deck</li>
+              <li>Strategic, tactical &amp; operational implications</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 03 WORLDWIDE MARKETPLACE ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · The Worldwide Marketplace</p><h2>Everyday life is already global</h2></div>
+          <div class="slide-no">03</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>The opening idea</h3>
+            <p>Consumers buy from companies all over the world every week — a shirt sewn in Vietnam, a phone designed in California and assembled in China. Globalization has fundamentally changed how marketers approach business.</p>
+            <p>To succeed abroad, marketers learn new cultures, work with partners who speak other languages, and navigate different laws and buying motives.</p>
+          </div>
+          <div class="panel soft">
+            <h3>Why start here for phones</h3>
+            <ul class="list">
+              <li>The smartphone is the textbook example of a globally marketed everyday product.</li>
+              <li>Apple and Samsung both compete in 100+ countries with adapted mixes.</li>
+              <li>Components, design, assembly, and sales span dozens of nations — a fully global value chain.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 04 TYPES OF GLOBAL BUSINESS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Types of Global Businesses · LO #1</p><h2>MNCs, born-globals, home &amp; host</h2></div>
+          <div class="slide-no">04</div>
+        </header>
+        <div class="content">
+          <div class="grid two" style="gap:14px;">
+            <div class="panel accent-teal">
+              <div class="define"><b>Multinational corporation (MNC):</b> <span>an organization conducting business in at least one country other than the home country where it is headquartered.</span></div>
+              <div class="define" style="border-color:var(--green); margin-top:10px;"><b>Born-global firm:</b> <span>a business that operates in two or more countries from inception.</span></div>
+            </div>
+            <div class="panel accent-gold">
+              <div class="define" style="border-color:var(--gold);"><b>Home country:</b> <span>the nation where the business is located or that houses its main headquarters.</span></div>
+              <div class="define" style="border-color:var(--coral); margin-top:10px;"><b>Host country:</b> <span>the nation being targeted for expansion by a company.</span></div>
+            </div>
+          </div>
+          <div class="panel soft">
+            <h3>Applied to the case</h3>
+            <p>Apple (home country: United States) and Samsung (home country: South Korea) are both large MNCs. When Apple sells the iPhone in India, India is the host country. Neither is "born-global," but Samsung's parent group has been internationally diversified across industries for decades.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 05 COMPANY ORIENTATION (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Company Orientation</p><h2>Four ways leaders see the world</h2></div>
+          <div class="slide-no">05</div>
+        </header>
+        <div class="content four">
+          <div class="panel accent-teal"><h3>Ethnocentric</h3><p>Home-country employees and policies run everything abroad. Strong control and fast competency transfer, but weak local adaptation.</p></div>
+          <div class="panel accent-green"><h3>Polycentric</h3><p>Locals run host-country operations. Cheaper and better-adapted, but coordination across units is harder.</p></div>
+          <div class="panel accent-gold"><h3>Regiocentric</h3><p>Managers drawn from a region (e.g., the Pacific Rim). Knowledge transfers within the region; control across a diverse set is the challenge.</p></div>
+          <div class="panel accent-coral"><h3>Geocentric</h3><p>Best people and systems regardless of country; a truly global orientation. Adapts fastest, but global search and coordination cost more.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 06 LIVE DEMO 1 — ORIENTATION EXPLORER ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 1 of 7</p><h2>Company-orientation explorer</h2></div>
+          <div class="slide-no">06</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">orientation_explorer.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Click an orientation to see its control-versus-adaptation profile and where Apple and Samsung roughly sit. The two bars are computed from the chapter's described trade-offs.</p>
+              <div class="orient-track" id="orient-track"></div>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="status-strip" id="orient-desc" style="min-height:120px;"></div>
+                </div>
+                <div>
+                  <div class="gauge-wrap" style="gap:14px;">
+                    <div>
+                      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:5px;"><span>Central control</span><span id="orient-ctrl-v" style="font-family:'JetBrains Mono',monospace; color:var(--teal); font-weight:700;">—</span></div>
+                      <div class="gauge"><div class="gauge-fill" id="orient-ctrl" style="width:0%; background:var(--teal);"></div></div>
+                    </div>
+                    <div>
+                      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:5px;"><span>Local adaptation</span><span id="orient-adapt-v" style="font-family:'JetBrains Mono',monospace; color:var(--gold); font-weight:700;">—</span></div>
+                      <div class="gauge"><div class="gauge-fill" id="orient-adapt" style="width:0%; background:var(--gold);"></div></div>
+                    </div>
+                  </div>
+                  <div class="build-out" id="orient-firms" style="margin-top:14px;">Pick an orientation to see which firm leans this way.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 07 ESSENCE OF MARKETING ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · The Essence of Marketing</p><h2>Marketing is an exchange of value</h2></div>
+          <div class="slide-no">07</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>Definition</h3>
+            <p>Marketing is discovering consumer needs and wants, creating the products that meet those needs, and then pricing, promoting, and delivering those products and services.</p>
+            <div class="define"><b>International marketing:</b> <span>using the marketing mix to meet the needs and wants of consumers in foreign markets.</span></div>
+            <div class="define" style="border-color:var(--samsung); margin-top:10px;"><b>Exchange of value (AMA view):</b> <span>creating, communicating, delivering, and exchanging offerings that have value for customers, clients, partners, and society at large.</span></div>
+          </div>
+          <div class="panel soft">
+            <h3>Money is common, but not required</h3>
+            <p>Any trade that satisfies both parties is marketing — goods for goods, or goods for services. The defining feature is mutual value, not currency.</p>
+            <div class="takeaway" style="margin-top:14px;">
+              <p><b>Why it frames the case:</b> Apple and Samsung each win only when buyers feel they receive value worth the price. Apple's value is an integrated premium experience; Samsung's is breadth and choice.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 08 THE FOUR Ps ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · The Marketing Mix · LO #2</p><h2>The four Ps</h2></div>
+          <div class="slide-no">08</div>
+        </header>
+        <div class="content split-wide">
+          <div class="grid" style="align-content:start;">
+            <table class="table">
+              <thead><tr><th>P</th><th>Definition (Figure 1.2)</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Product</strong></td><td>A good or service that satisfies consumer needs by providing value.</td></tr>
+                <tr><td><strong>Price</strong></td><td>The value of what is exchanged in return for the product.</td></tr>
+                <tr><td><strong>Place</strong></td><td>Movement of the product from the seller to the buyer (distribution).</td></tr>
+                <tr><td><strong>Promotion</strong></td><td>Communication of product value between buyer and seller.</td></tr>
+              </tbody>
+            </table>
+            <div class="define"><b>Marketing mix:</b> <span>the major activities used to develop and sell goods and services — products, prices, distribution systems, and promotional programs.</span></div>
+          </div>
+          <div class="panel accent-gold soft">
+            <h3>Each P in the rivalry</h3>
+            <ul class="list gold">
+              <li><strong>Product:</strong> Apple = one integrated device; Samsung = a wide range plus the larger "phablet" screen.</li>
+              <li><strong>Price:</strong> Apple = premium; Samsung = full ladder from ~$100 up.</li>
+              <li><strong>Place:</strong> both global; Samsung pushes deeper into low-income markets.</li>
+              <li><strong>Promotion:</strong> Apple = controlled &amp; iconic; Samsung = high-spend, event-driven.</li>
+            </ul>
+            <p style="margin-top:12px; font-size:14px; color:var(--soft);">Tune all four Ps for each brand in the live demo on slide 10.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 09 PROMOTIONAL MIX ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · The Promotional Mix</p><h2>Promotion is itself a bundle</h2></div>
+          <div class="slide-no">09</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:12px;">
+            <div class="panel accent-teal"><h3>Advertising</h3><p>Paid, non-personal messages. Apple's 1984 spot and "Think Different" are landmarks.</p></div>
+            <div class="panel accent-green"><h3>Sales promotion</h3><p>Short-term incentives. Carrier bundles and trade deals push volume.</p></div>
+            <div class="panel accent-gold"><h3>Personal selling</h3><p>Face-to-face. Apple Stores and carrier reps shape the purchase.</p></div>
+            <div class="panel accent-coral"><h3>PR &amp; direct</h3><p>Earned media and direct outreach. Samsung's Oscars selfie was a PR coup.</p></div>
+          </div>
+          <div class="two" style="display:grid; gap:14px;">
+            <div class="panel soft">
+              <h3>Apple's communications problem</h3>
+              <p>The case notes Apple worried its advertising had "lost its edge." It built an in-house agency and ran a creative "shootout" — promotion is never set-and-forget.</p>
+            </div>
+            <div class="panel soft">
+              <h3>Samsung's promotional surface</h3>
+              <p>Heavy spend plus sponsorships (SXSW, a Prince concert showcase) and the viral Oscars selfie — retweeted 3.5M+ times — gave Samsung outsized share of voice.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 10 LIVE DEMO 2 — MARKETING MIX MAP ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 2 of 7</p><h2>Marketing Mix — position the two brands</h2></div>
+          <div class="slide-no">10</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">marketing_mix.js — runs live in this slide</span>
+              <div class="app-tabs">
+                <button class="tab-btn active" data-mixbrand="apple">Apple</button>
+                <button class="tab-btn" data-mixbrand="samsung">Samsung</button>
+              </div>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Drag the four-P sliders for the selected brand. The program maps the mix onto a <strong>price ↔ reach</strong> positioning map and summarizes the resulting strategy. Edit each brand independently and watch the markers move apart — differentiation, live.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="slider-grid" id="mix-sliders"></div>
+                  <div class="status-strip" id="mix-status" style="margin-top:14px;"></div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:300px; display:grid; grid-template-rows:1fr auto;">
+                    <svg class="viz" id="mix-map" viewBox="0 0 420 300" preserveAspectRatio="xMidYMid meet"></svg>
+                    <div class="legend-row" style="justify-content:center;">
+                      <span class="legend-dot"><i style="background:var(--apple)"></i>Apple</span>
+                      <span class="legend-dot"><i style="background:var(--samsung)"></i>Samsung</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 11 NEEDS WANTS DEMAND ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Markets, Needs &amp; Wants</p><h2>From needs to demand</h2></div>
+          <div class="slide-no">11</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:12px;">
+            <div class="panel accent-teal"><h3>Need</h3><p>A necessity of life for survival and well-being. <em>To communicate and connect.</em></p></div>
+            <div class="panel accent-green"><h3>Want</h3><p>A need expressed as a desire for a specific object. <em>"I want a smartphone."</em></p></div>
+            <div class="panel accent-gold"><h3>Demand</h3><p>The amount buyers will purchase at various price levels. <em>Fewer can afford $850.</em></p></div>
+            <div class="panel accent-coral"><h3>Market</h3><p>People with wants and needs, money to spend, and willingness to spend it.</p></div>
+          </div>
+          <div class="two" style="display:grid; gap:14px;">
+            <div class="panel soft"><h3>Why demand is central</h3><p>A majority may <em>want</em> a flagship phone, but only some can turn that want into <em>demand</em>. In India an Android phone runs ~$100 while an iPhone 5 runs ~$850 — so demand splits sharply by price.</p></div>
+            <div class="panel soft"><h3>The wants vary by culture</h3><p>The same need (status, connection) is expressed through different wants in different markets — which is why the needs ladder on the next slide matters for positioning.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 12 LIVE DEMO 3 — NEEDS LADDER ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 3 of 7</p><h2>Needs ladder — what a phone really sells</h2></div>
+          <div class="slide-no">12</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">needs_ladder.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Chapter 1 lists physiological, safety, love/belonging, and self-actualization needs. Click any rung to see how a smartphone is marketed to satisfy <em>that</em> need — and which brand leans on it most. A want is a need aimed at a specific object.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div><div class="ladder" id="needs-ladder"></div></div>
+                <div>
+                  <div class="status-strip" id="needs-detail" style="min-height:150px;"></div>
+                  <div class="build-out" id="needs-want" style="margin-top:12px;">Pick a rung to translate the need into a phone "want."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 13 STP THEORY ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Segmentation, Targeting &amp; Positioning</p><h2>STP and differentiation</h2></div>
+          <div class="slide-no">13</div>
+        </header>
+        <div class="content split-wide">
+          <div class="grid" style="align-content:start;">
+            <div class="panel accent-teal"><h3>Segmentation</h3><p>Grouping consumers by needs, attitudes, and interests. International marketers also segment by nationality and custom.</p></div>
+            <div class="panel accent-green"><h3>Targeting</h3><p>Choosing the specific, identifiable segments the company will actually serve with its mix.</p></div>
+            <div class="panel accent-gold"><h3>Positioning &amp; differentiation</h3><p>Creating a perception relative to rivals by emphasizing a unique benefit that separates the product from competitors.</p></div>
+          </div>
+          <div class="panel soft accent-samsung">
+            <h3>Two positioning strategies</h3>
+            <ul class="list apple"><li><strong>Apple — differentiation by being singular:</strong> one premium phone everywhere, positioned on design, ecosystem, and "cool."</li></ul>
+            <ul class="list samsung" style="margin-top:12px;"><li><strong>Samsung — multi-segment:</strong> many phones at many prices, each tuned to a region; 60,000 research staff track trends in fashion and design.</li></ul>
+            <div class="takeaway" style="margin-top:14px;"><p><b>Two valid paths:</b> Apple differentiates by being singular; Samsung differentiates by covering segments Apple ignores. Build a statement yourself on the next slide.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 14 LIVE DEMO 4 — POSITIONING BUILDER ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 4 of 7</p><h2>Positioning-statement builder</h2></div>
+          <div class="slide-no">14</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">positioning_builder.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Pick a target segment, a point of differentiation, and a price stance. The program assembles a formal positioning statement and scores how <strong>distinct</strong> and <strong>credible</strong> it is — the chapter's positioning and differentiation concepts as a working tool.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div class="grid" style="gap:14px;">
+                  <div>
+                    <div style="font-weight:600; color:var(--text); font-size:14px; margin-bottom:7px;">Target segment</div>
+                    <div class="chip-pick" id="pos-seg"></div>
+                  </div>
+                  <div>
+                    <div style="font-weight:600; color:var(--text); font-size:14px; margin-bottom:7px;">Point of differentiation</div>
+                    <div class="chip-pick" id="pos-diff"></div>
+                  </div>
+                  <div>
+                    <div style="font-weight:600; color:var(--text); font-size:14px; margin-bottom:7px;">Price stance</div>
+                    <div class="chip-pick" id="pos-price"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="build-out" id="pos-out" style="min-height:120px;"></div>
+                  <div class="gauge-wrap" style="margin-top:14px; gap:12px;">
+                    <div>
+                      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:5px;"><span>Distinctiveness</span><span id="pos-d-v" style="font-family:'JetBrains Mono',monospace; color:var(--teal); font-weight:700;">0</span></div>
+                      <div class="gauge"><div class="gauge-fill" id="pos-d" style="width:0%; background:var(--teal);"></div></div>
+                    </div>
+                    <div>
+                      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:5px;"><span>Credibility</span><span id="pos-c-v" style="font-family:'JetBrains Mono',monospace; color:var(--gold); font-weight:700;">0</span></div>
+                      <div class="gauge"><div class="gauge-fill" id="pos-c" style="width:0%; background:var(--gold);"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 15 INTERNATIONAL CONTEXT ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Marketing in an International Context</p><h2>Same essence, more adjustments</h2></div>
+          <div class="slide-no">15</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>What changes across borders</h3>
+            <p>The essence of marketing stays the same, but entering a new country means adjusting the mix plus managerial practices, accounting, HR, shipping, and storage.</p>
+            <p>Two forces decide how much adaptation is needed:</p>
+            <ul class="list" style="margin-top:10px;">
+              <li><strong>The drivers of globalization</strong> — forces that open markets.</li>
+              <li><strong>The factors that create complexity</strong> — differences that demand adaptation.</li>
+            </ul>
+          </div>
+          <div class="panel soft">
+            <h3>Homogenization vs. difference</h3>
+            <p>Sometimes tastes converge and only small tweaks are needed; sometimes a host market is so different that big changes to the mix are required.</p>
+            <div class="takeaway" style="margin-top:14px;"><p><b>The case in one line:</b> Apple bets tastes have converged (one phone everywhere); Samsung bets they haven't (many phones, adapted by region).</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 16 DRIVERS OF GLOBALIZATION (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Drivers of Globalization · LO #3</p><h2>Four forces opening markets</h2></div>
+          <div class="slide-no">16</div>
+        </header>
+        <div class="content">
+          <div class="define" style="margin-bottom:4px;"><b>Globalization:</b> <span>the increased interconnectedness of consumers and businesses globally (Figure 1.4).</span></div>
+          <div class="grid four" style="gap:12px;">
+            <div class="panel accent-teal"><h3>Channels of Communication</h3><p>Cheaper, broader communication and social networks let firms reach and hear consumers anywhere.</p><p style="font-size:13px; color:var(--soft); margin-top:8px;"><strong style="color:var(--text)">Case:</strong> the Oscars Galaxy selfie hit 3.5M+ retweets.</p></div>
+            <div class="panel accent-green"><h3>Lower Transportation Costs</h3><p>Containerization and cheaper freight make entering more markets viable.</p><p style="font-size:13px; color:var(--soft); margin-top:8px;"><strong style="color:var(--text)">Case:</strong> global supply chains ship hardware worldwide.</p></div>
+            <div class="panel accent-gold"><h3>Immigration &amp; Emigration</h3><p>Movement of people widens brand exposure and cross-border demand.</p><p style="font-size:13px; color:var(--soft); margin-top:8px;"><strong style="color:var(--text)">Case:</strong> diaspora &amp; travel spread phone preferences.</p></div>
+            <div class="panel accent-coral"><h3>Governmental Actions</h3><p>Liberalization and lower barriers stimulate flows of goods, capital, and labor.</p><p style="font-size:13px; color:var(--soft); margin-top:8px;"><strong style="color:var(--text)">Case:</strong> carrier subsidies set the $199 US iPhone price.</p></div>
+          </div>
+          <div class="takeaway"><p><b>Tie to the case:</b> these drivers explain why Greater China became Apple's second-largest market and why India became the next battleground. Toggle them in the next live demo.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 17 LIVE DEMO 5 — GLOBALIZATION DRIVERS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 5 of 7</p><h2>Drivers of Globalization — market-reach model</h2></div>
+          <div class="slide-no">17</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">globalization_model.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Toggle each of the four drivers. The model recomputes a <strong>market-reach score</strong> for a phone maker and shows which market tiers become reachable. More active drivers, more openness.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="run-row">
+                    <button class="action-btn primary" id="glob-all">Enable all drivers</button>
+                    <button class="action-btn" id="glob-none">Reset</button>
+                  </div>
+                  <div class="slider-grid" id="glob-toggles"></div>
+                  <div class="status-strip" id="glob-status" style="margin-top:14px;">Toggle drivers to compute a market-reach score.</div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:240px;">
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                      <strong style="font-family:'Fraunces',serif; font-size:18px;">Reachable markets</strong>
+                      <span id="glob-score" style="font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--teal);">0 / 100</span>
+                    </div>
+                    <div id="glob-markets"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 18 COMPLEXITY FACTORS (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Complexity Factors · LO #4</p><h2>Five factors that create complexity</h2></div>
+          <div class="slide-no">18</div>
+        </header>
+        <div class="content split-lead">
+          <table class="table">
+            <thead><tr><th>Factor (Figure 1.5)</th><th>What it governs</th><th>In the case</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Culture</strong></td><td>Beliefs, customs, tastes, willingness to try.</td><td>"Cool"/status drives Apple; local taste tracking drives Samsung.</td></tr>
+              <tr><td><strong>Language</strong></td><td>Verbal &amp; nonverbal; translation of promotion.</td><td>Localize across China, India, Europe, US.</td></tr>
+              <tr><td><strong>Political &amp; legal</strong></td><td>Regulation of commerce, ads, contracts.</td><td>Patent litigation; carrier-contract rules.</td></tr>
+              <tr><td><strong>Economic systems</strong></td><td>Resource/income allocation; ability to pay.</td><td>Income splits demand $100 vs. $850.</td></tr>
+              <tr><td><strong>Infrastructure</strong></td><td>Networks, retail, distribution, tech access.</td><td>Carrier networks &amp; retail reach shape price and place.</td></tr>
+            </tbody>
+          </table>
+          <div class="panel soft accent-violet">
+            <h3>From complexity to a global mindset</h3>
+            <p>Responding across countries requires a global mindset — learning new places, people, and processes.</p>
+            <ul class="list" style="margin-top:12px;">
+              <li>Apple keeps one product nearly identical — low adaptation, high consistency.</li>
+              <li>Samsung varies models, processors, and price by region — high adaptation, broad coverage.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 19 LIVE DEMO 6 — COMPLEXITY RADAR ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 6 of 7</p><h2>Complexity radar — rate a host market</h2></div>
+          <div class="slide-no">19</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">complexity_radar.js — runs live in this slide</span>
+              <div class="app-tabs">
+                <button class="tab-btn active" data-market="india">India</button>
+                <button class="tab-btn" data-market="china">China</button>
+                <button class="tab-btn" data-market="europe">Europe</button>
+                <button class="tab-btn" data-market="custom">Custom</button>
+              </div>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Pick a host market (or choose <em>Custom</em> and drag the sliders). The radar plots the five complexity factors and the program computes an overall <strong>adaptation-effort score</strong> — how much of the mix a firm must change to enter.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="slider-grid" id="cx-sliders"></div>
+                  <div class="status-strip" id="cx-status" style="margin-top:14px;"></div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:330px; display:grid; place-items:center;">
+                    <svg class="viz" id="cx-radar" viewBox="0 0 360 320" preserveAspectRatio="xMidYMid meet"></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 20 STANDARDIZATION VS ADAPTATION (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 → Ch. 10 bridge · Product Strategy</p><h2>Standardize or adapt?</h2></div>
+          <div class="slide-no">20</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>The core trade-off</h3>
+            <p><strong>Standardization</strong> keeps one mix everywhere: lower cost, consistent brand, faster rollout. <strong>Adaptation</strong> tailors the mix to each market: better local fit, higher cost and complexity.</p>
+            <ul class="list" style="margin-top:10px;">
+              <li><strong>Apple → standardization:</strong> the iPhone 5 "was the same in every world market."</li>
+              <li><strong>Samsung → adaptation:</strong> several Galaxy S4 versions with different processors for different regions.</li>
+            </ul>
+          </div>
+          <div class="panel soft">
+            <h3>Why neither always wins</h3>
+            <p>The right point on the scale depends on how similar the host market is to home and how price-sensitive demand is. Standardization scales cheaply; adaptation captures buyers a one-size product would miss.</p>
+            <div class="takeaway" style="margin-top:14px;"><p><b>Next:</b> the live simulator lets you slide from full standardization to full adaptation and watch cost, local fit, and net payoff trade off.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 21 LIVE DEMO 7 — ADAPTATION SIMULATOR ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 7 of 7</p><h2>Standardization ↔ adaptation simulator</h2></div>
+          <div class="slide-no">21</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">adaptation_sim.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Slide from <em>fully standardized</em> to <em>fully adapted</em> and set how different the host market is. The model trades local fit against cost and plots a <strong>net-payoff curve</strong>, marking the optimum — the chapter's adaptation decision made quantitative.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="slider-grid" id="adapt-sliders"></div>
+                  <div class="result-grid" style="margin-top:14px;">
+                    <div class="result-box"><span class="rv" id="adapt-fit">0</span><span class="rl">local fit</span></div>
+                    <div class="result-box"><span class="rv" id="adapt-cost">0</span><span class="rl">cost index</span></div>
+                    <div class="result-box"><span class="rv" id="adapt-net">0</span><span class="rl">net payoff</span></div>
+                  </div>
+                  <div class="status-strip" id="adapt-status" style="margin-top:14px;"></div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:300px;">
+                    <strong style="font-family:'Fraunces',serif; font-size:17px;">Net payoff vs. adaptation level</strong>
+                    <svg class="viz" id="adapt-chart" viewBox="0 0 420 250" preserveAspectRatio="xMidYMid meet" style="margin-top:8px;"></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 22 DAILY LIFE ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · International Marketing in Daily Life</p><h2>Opportunity hides in everyday products</h2></div>
+          <div class="slide-no">22</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <h3>The chapter's argument</h3>
+            <p>Marketing can feel glamorous, but most opportunities come from simple, everyday products — bathing, eating, transportation, payment. Commonplace activities reveal target markets that can be served with culturally adapted products.</p>
+          </div>
+          <div class="panel soft">
+            <h3>The phone as daily infrastructure</h3>
+            <ul class="list">
+              <li>The smartphone has become an everyday-life product — payment, communication, navigation, media.</li>
+              <li>Apple Pay (launched with the iPhone 6) pushed the phone into the daily act of paying.</li>
+              <li>Everyday ubiquity is exactly why both firms fight so hard for each segment.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 23 SUSTAINABILITY (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Sustainability · LO #5</p><h2>Sustainability as a source of profit</h2></div>
+          <div class="slide-no">23</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-green">
+            <div class="define" style="border-color:var(--green);"><b>Sustainability:</b> <span>meeting the needs of the current generation in a way that leaves future generations able to meet their needs.</span></div>
+            <p style="margin-top:12px;">The chapter reframes sustainability not as a cost but as a driver of innovation and savings — FedEx cut fuel use ~36% while raising capacity ~20%, then sold sustainability consulting.</p>
+          </div>
+          <div class="panel soft">
+            <h3>The five-stage framework (Table 1.2)</h3>
+            <ul class="list green">
+              <li><strong>1 · Compliance as opportunity</strong> — beat regulations early.</li>
+              <li><strong>2 · Sustainable value chains</strong> — supply, operations, returns.</li>
+              <li><strong>3 · Sustainable products</strong> — leverage "green" demand.</li>
+              <li><strong>4 · New business models</strong> — new ways to deliver value.</li>
+              <li><strong>5 · Next-practice platforms</strong> — change the paradigm.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 24 LIVE DEMO 8 — BOP PROFIT CALCULATOR ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 8 of 9</p><h2>Bottom-of-the-pyramid profit model</h2></div>
+          <div class="slide-no">24</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">bop_model.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Prahalad's argument: with ~4 billion people living on under $2/day, even a tiny profit per sale can total a fortune across the segment. Set the reachable population, adoption rate, and per-unit profit, and the model shows total profit — and why a budget phone can beat a premium one on <em>volume</em>.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="slider-grid" id="bop-sliders"></div>
+                  <div class="status-strip" id="bop-status" style="margin-top:14px;"></div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:170px;">
+                    <strong style="font-family:'Fraunces',serif; font-size:17px;">Total profit: budget vs. premium</strong>
+                    <div style="margin-top:14px;" id="bop-bars"></div>
+                  </div>
+                  <div class="result-grid" style="grid-template-columns:repeat(2,1fr);">
+                    <div class="result-box"><span class="rv bn-samsung" id="bop-budget">$0</span><span class="rl">budget-phone total profit</span></div>
+                    <div class="result-box"><span class="rv bn-apple" id="bop-premium">$0</span><span class="rl">premium-phone total profit</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 25 BOP (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Bottom-of-the-Pyramid</p><h2>Four billion overlooked consumers</h2></div>
+          <div class="slide-no">25</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-gold">
+            <div class="define" style="border-color:var(--gold);"><b>Bottom-of-the-pyramid:</b> <span>the ~4 billion people globally living on less than $2 per day.</span></div>
+            <p style="margin-top:12px;">The traditional view said this group lacks the money to be worth targeting. Prahalad countered: at four billion consumers, small per-sale profits aggregate enormously, and serving them drives efficiency and innovation that flow back to richer markets.</p>
+          </div>
+          <div class="panel soft">
+            <h3>Direct line to the case</h3>
+            <ul class="list gold">
+              <li>Developing countries show strong demand for inexpensive phones.</li>
+              <li>Samsung's low-cost Android models reach exactly this segment.</li>
+              <li>Apple long had no low-cost option — the gap the iPhone 5C tried, imperfectly, to fill.</li>
+            </ul>
+            <div class="takeaway" style="margin-top:14px;"><p><b>The model on the previous slide</b> makes Prahalad's volume argument concrete.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 26 ETHICS (theory) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Ethical Decision-Making</p><h2>Relativism vs. justice</h2></div>
+          <div class="slide-no">26</div>
+        </header>
+        <div class="content two">
+          <div class="panel accent-teal">
+            <h3>Cultural relativism</h3>
+            <p>An individual's culture should determine what is ethical; what a culture accepts is the standard for doing business there.</p>
+            <p style="margin-top:10px; color:var(--coral); font-size:14.5px;"><strong>The risk:</strong> taken to the extreme, it can tacitly excuse practices most people consider wrong, such as child labor.</p>
+          </div>
+          <div class="panel accent-samsung">
+            <h3>The justice approach</h3>
+            <p>Treat all people fairly and consistently, regardless of local law.</p>
+            <ul class="list samsung" style="margin-top:10px;">
+              <li><strong>Distributive justice:</strong> fairness of outcomes, rewards, and punishments.</li>
+              <li><strong>Procedural justice:</strong> fair, reliable use of rules and protocols.</li>
+            </ul>
+            <p style="margin-top:10px; font-size:14.5px; color:var(--soft);">Calls for equivalent pay, conditions, and conduct everywhere a firm operates.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 27 LIVE DEMO 9 — ETHICS TOOL ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 9 of 9</p><h2>Ethics lens — two frameworks, one dilemma</h2></div>
+          <div class="slide-no">27</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">ethics_lens.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">Pick a real international-marketing dilemma. The program shows how <strong>cultural relativism</strong> and the <strong>justice approach</strong> each judge it — so you can see the two frameworks reach different verdicts on the same facts.</p>
+              <div class="toggle-pill-row" id="ethics-cases"></div>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div class="panel accent-teal" style="box-shadow:none;">
+                  <h3 style="color:var(--teal);">Cultural relativism says…</h3>
+                  <p id="ethics-rel" style="min-height:96px;"></p>
+                </div>
+                <div class="panel accent-samsung" style="box-shadow:none;">
+                  <h3 style="color:var(--samsung);">The justice approach says…</h3>
+                  <p id="ethics-jus" style="min-height:96px;"></p>
+                </div>
+              </div>
+              <div class="status-strip" id="ethics-note" style="margin-top:12px;">Pick a dilemma above to compare the two ethical lenses.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 28 BOOK ORGANIZATION ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · The Organization of This Book</p><h2>Where Chapter 1 leads</h2></div>
+          <div class="slide-no">28</div>
+        </header>
+        <div class="content three">
+          <div class="panel accent-teal"><h3>Part I — Essentials</h3><p>Intro, culture, global trade, country selection &amp; entry, planning and control. (Ch. 1–5)</p></div>
+          <div class="panel accent-green"><h3>Parts II–III — Markets &amp; Product</h3><p>Segmentation, positioning, market research; product &amp; brand management; standardization vs. adaptation. (Ch. 6–10)</p></div>
+          <div class="panel accent-gold"><h3>Parts IV–VI — Price, Place, Promotion</h3><p>Pricing &amp; finance, channels &amp; retailing, integrated communications &amp; PR. (Ch. 11–16)</p></div>
+          <div class="panel soft" style="grid-column: span 3;">
+            <p><strong>Chapter 1 is the foundation</strong> — every later chapter deepens one element of the mix or one complexity factor introduced here. The Apple–Samsung case touches nearly all of them at once, which is why it sits in Chapter 1.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 29 CASE: THE RIVALRY ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Case 1-3 · The Competitive Threat</p><h2>The post-Jobs era and a rising rival</h2></div>
+          <div class="slide-no">29</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel">
+            <h3>Timeline of the battle</h3>
+            <div class="timeline">
+              <div class="tl-item"><span class="tl-year">2011</span><div class="tl-body"><strong>Steve Jobs dies</strong><span>Apple is the most valuable tech company; questions arise about its next act.</span></div></div>
+              <div class="tl-item"><span class="tl-year">2012</span><div class="tl-body"><strong>Galaxy S III in Europe</strong><span>Samsung stages a lavish Galaxy S4 launch at Radio City Music Hall.</span></div></div>
+              <div class="tl-item"><span class="tl-year">2013</span><div class="tl-body"><strong>iPhone 5C unveiled</strong><span>A lower-priced, plastic, colorful model — about $100 below the 5s.</span></div></div>
+              <div class="tl-item"><span class="tl-year">2014</span><div class="tl-body"><strong>Cook asserts himself</strong><span>Apple buys Beats, builds an in-house ad agency, and launches the iPhone 6 / 6 Plus.</span></div></div>
+            </div>
+          </div>
+          <div class="panel soft accent-samsung">
+            <h3>Why Samsung was the threat</h3>
+            <ul class="list samsung">
+              <li>A division of a giant industrial group — semiconductors to appliances to phones.</li>
+              <li>Galaxy phones run <strong>Android</strong>; the Note's larger "phablet" screen was a point of difference that drove sales.</li>
+              <li>Phones across the full price range, including inexpensive Android models for developing markets where Apple had no low-cost option.</li>
+              <li>An analyst: Samsung was "simply out-innovating its archrival when it comes to marketing."</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 30 CASE: POST-JOBS DECISIONS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Case 1-3 · The Post-Jobs Era</p><h2>Cook's strategic moves</h2></div>
+          <div class="slide-no">30</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:12px;">
+            <div class="panel accent-apple"><h3>iPhone 5C</h3><p>Lower-priced, colorful, plastic — aimed at buyers who couldn't afford a top-of-line phone, especially in emerging markets.</p></div>
+            <div class="panel accent-apple"><h3>Beats, $3B</h3><p>Brought Dr. Dre and Jimmy Iovine in; signaled a bet on music and "fashion electronics."</p></div>
+            <div class="panel accent-apple"><h3>In-house agency</h3><p>After worrying its ads had lost their edge, Apple formed an internal team and ran a creative "shootout."</p></div>
+            <div class="panel accent-apple"><h3>iPhone 6 / Apple Pay</h3><p>Bigger screens (answering Samsung's phablet) plus mobile payments and the Apple Watch.</p></div>
+          </div>
+          <div class="panel soft">
+            <h3>Reading the moves through Chapter 1</h3>
+            <p>Each decision is a marketing-mix lever: the 5C is <strong>price</strong> and <strong>product</strong> segmentation; the in-house agency is <strong>promotion</strong>; larger screens are <strong>product</strong> adaptation to a competitor's point of difference; Apple Pay extends the product into everyday life.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 31 CASE: KEY NUMBERS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Case 1-3 · The Numbers</p><h2>Prices, markets, and research scale</h2></div>
+          <div class="slide-no">31</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:12px;">
+            <div class="panel"><span class="big-number bn-apple">$199</span><span class="label">US iPhone 5 on a 2-year contract (subsidized)</span></div>
+            <div class="panel"><span class="big-number bn-apple">$850</span><span class="label">unsubsidized iPhone 5 in India</span></div>
+            <div class="panel"><span class="big-number bn-samsung">~$100</span><span class="label">a Samsung Android phone in India</span></div>
+            <div class="panel"><span class="big-number bn-samsung">60,000</span><span class="label">Samsung staff in research centers worldwide</span></div>
+          </div>
+          <div class="two" style="display:grid; gap:14px;">
+            <div class="panel soft"><h3>Two research philosophies</h3><p>Jobs downplayed formal market research, arguing consumers don't know what they want. Samsung relies on it heavily — tracking fashion and design trends, with designers from psychology, sociology, and engineering.</p></div>
+            <div class="panel soft"><h3>Where the growth was</h3><p>Greater China became Apple's second-largest market. India — the #3 smartphone market — is where Apple lagged Samsung most, because price-sensitive demand favored cheap Android phones.</p></div>
+          </div>
+          <div class="takeaway"><p><b>Setup for the model:</b> these numbers feed the pricing demo on the next slide.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 32 LIVE DEMO 10 — PRICING MODEL (Q1) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 10 of 11 · Answers Q1</p><h2>iPhone 5C pricing model</h2></div>
+          <div class="slide-no">32</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">pricing_model.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">A demand-and-revenue model for the 2013 decision. A market has <strong>premium</strong> and <strong>budget</strong> buyers. Compare <em>flagship only</em> vs. <em>flagship + a 5C-style budget phone</em>, and test whether the cheaper model wins net buyers or just cannibalizes the flagship.</p>
+              <div class="two" style="display:grid; gap:16px; align-items:start;">
+                <div>
+                  <div class="slider-grid" id="price-sliders"></div>
+                  <div class="run-row" style="margin-top:14px;">
+                    <button class="action-btn primary" id="price-run">Run comparison</button>
+                    <button class="action-btn" id="price-reset">Reset</button>
+                  </div>
+                </div>
+                <div>
+                  <div class="viz-stage" style="min-height:160px;">
+                    <strong style="font-family:'Fraunces',serif; font-size:17px;">Estimated buyers (relative units)</strong>
+                    <div style="margin-top:14px;" id="price-bars"></div>
+                  </div>
+                  <div class="result-grid">
+                    <div class="result-box"><span class="rv" id="price-flag">0</span><span class="rl">flagship-only revenue index</span></div>
+                    <div class="result-box"><span class="rv" id="price-both">0</span><span class="rl">flagship + 5C revenue index</span></div>
+                    <div class="result-box"><span class="rv" id="price-verdict">—</span><span class="rl">verdict</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="status-strip" id="price-status" style="margin-top:14px;">Press <strong>Run comparison</strong> to evaluate the 5C decision under the current assumptions.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 33 LIVE DEMO 11 — SEGMENT COVERAGE (Q2) ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker" style="color:var(--green)">Live Demo · Program 11 of 11 · Answers Q2</p><h2>Samsung's multi-segment coverage</h2></div>
+          <div class="slide-no">33</div>
+        </header>
+        <div class="content">
+          <div class="app-shell">
+            <div class="app-bar">
+              <span class="app-dot r"></span><span class="app-dot y"></span><span class="app-dot g"></span>
+              <span class="app-title">segment_coverage.js — runs live in this slide</span>
+            </div>
+            <div class="app-body">
+              <p style="margin-bottom:12px;">The market splits into price tiers. <strong>Apple</strong> fields one flagship; <strong>Samsung</strong> fields a portfolio. Step through the tiers to see how Samsung's range covers segments Apple leaves open — the heart of the answer to Q2.</p>
+              <div class="run-row">
+                <button class="action-btn primary" id="seg-run">Animate coverage</button>
+                <button class="action-btn apple" id="seg-apple">Show Apple only</button>
+                <button class="action-btn samsung" id="seg-samsung">Show Samsung only</button>
+                <button class="action-btn" id="seg-both">Show both</button>
+              </div>
+              <div class="viz-stage" style="min-height:240px;">
+                <div id="seg-tiers"></div>
+              </div>
+              <div class="status-strip" id="seg-status" style="margin-top:12px;">Press a button to see how each firm covers the price tiers.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 34 Q1 ANSWER ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Discussion Question 1</p><h2>Was the iPhone 5C the right pricing decision?</h2></div>
+          <div class="slide-no">34</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-green">
+            <h3>The case for "yes"</h3>
+            <ul class="list green">
+              <li>It addressed a real gap: for years Apple had no lower-cost phone for buyers unwilling or unable to pay a premium.</li>
+              <li>It extended the line into emerging markets (China, India) where price-sensitive demand was large and growing.</li>
+              <li>It protected brand equity better than discounting the flagship — a separate, colorful product, not a cheapened 5s.</li>
+              <li>It still aimed at value: Cook said the goal was "a great phone and a great experience" at lower cost, not a cheap phone.</li>
+            </ul>
+          </div>
+          <div class="panel accent-coral soft">
+            <h3>The case for "no" / the limits</h3>
+            <ul class="list coral">
+              <li>At only ~$100 below the 5s, it wasn't cheap enough to beat ~$100 Android phones in markets like India.</li>
+              <li>It risked cannibalizing the flagship without winning many genuinely new buyers.</li>
+              <li>Rapid low-cost competition from Chinese makers (e.g., Xiaomi) tempered the opportunity.</li>
+            </ul>
+            <div class="takeaway" style="margin-top:14px; border-left-color:var(--green);"><p><b>My assessment:</b> directionally right, incompletely executed. Segmenting price-sensitive buyers was sound; the price point sat in an awkward middle. The model on slide 32 shows it pays off only with enough true budget buyers and a wide enough gap.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 35 Q2 ANSWER ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Discussion Question 2</p><h2>How has Samsung's global strategy worked so well?</h2></div>
+          <div class="slide-no">35</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:12px;">
+            <div class="panel accent-samsung"><h3>Full-range product</h3><p>Phones at every price point, from inexpensive Android models to flagship Galaxy devices — covering segments Apple ignored.</p></div>
+            <div class="panel accent-samsung"><h3>Regional adaptation</h3><p>Multiple Galaxy S4 versions with different processors tuned to different regions.</p></div>
+            <div class="panel accent-samsung"><h3>Research-driven</h3><p>60,000 research staff; designers from psychology, sociology, engineering tracking fashion and design.</p></div>
+            <div class="panel accent-samsung"><h3>Aggressive promotion</h3><p>Heavy spend, sponsorships, and points of difference like the larger phablet screen.</p></div>
+          </div>
+          <div class="two" style="display:grid; gap:14px;">
+            <div class="panel soft"><h3>Mapping to Chapter 1</h3><ul class="list samsung"><li><strong>Segmentation &amp; targeting:</strong> serves many segments at once.</li><li><strong>Mix adapted:</strong> product, price, place, promotion all vary by market.</li><li><strong>Drivers of globalization:</strong> rides communication channels and emerging-market growth.</li></ul></div>
+            <div class="panel soft"><h3>Bottom line</h3><p>Samsung competes by <em>covering the whole market</em> while adapting locally — the opposite of Apple's one-premium-product consistency. Both are legitimate; Samsung's breadth reaches buyers a single flagship cannot.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 36 CODE EXCERPT ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Under the Hood</p><h2>The model behind the live demos</h2></div>
+          <div class="slide-no">36</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel">
+            <h3>Pricing model — the core function (runnable excerpt)</h3>
+            <div class="code"><span class="tok-com">// Demand splits by buyer type and price sensitivity.</span>
+<span class="tok-com">// This is the exact logic running on slide 32.</span>
+<span class="tok-kw">function</span> <span class="tok-fn">evaluate</span>(market, gapPct) {
+  <span class="tok-kw">const</span> premium = market.premiumShare;      <span class="tok-com">// 0..1</span>
+  <span class="tok-kw">const</span> budget  = <span class="tok-num">1</span> - premium;
+  <span class="tok-kw">const</span> sens    = market.priceSensitivity;   <span class="tok-com">// 0..1</span>
+
+  <span class="tok-com">// Flagship-only: budget buyers mostly walk away.</span>
+  <span class="tok-kw">const</span> flagBuyers = premium + budget * (<span class="tok-num">1</span> - sens) * <span class="tok-num">0.25</span>;
+
+  <span class="tok-com">// Add a 5C-style phone priced gapPct below flagship.</span>
+  <span class="tok-kw">const</span> capture = sens * (gapPct / <span class="tok-num">100</span>);
+  <span class="tok-kw">const</span> newBudget   = budget * capture;            <span class="tok-com">// genuinely new</span>
+  <span class="tok-kw">const</span> cannibalize = premium * capture * <span class="tok-num">0.4</span>;    <span class="tok-com">// shifted down</span>
+
+  <span class="tok-kw">const</span> flagRev = flagBuyers * <span class="tok-num">1.0</span>;
+  <span class="tok-kw">const</span> bothRev = (flagBuyers - cannibalize) * <span class="tok-num">1.0</span>
+               + (newBudget + cannibalize) * (<span class="tok-num">1</span> - gapPct / <span class="tok-num">100</span>);
+  <span class="tok-kw">return</span> { flagRev, bothRev, newBudget };
+}</div>
+          </div>
+          <div class="panel soft">
+            <h3>How all 11 demos are built</h3>
+            <ul class="list">
+              <li><strong>No setup, no server.</strong> Every program is plain JavaScript embedded in this one HTML file. Open the slides anywhere and the buttons and sliders just work.</li>
+              <li><strong>Live, not pre-recorded.</strong> Each input re-runs the model and redraws the SVG on the spot.</li>
+              <li><strong>Faithful to Chapter 1.</strong> Variables map to the chapter's concepts — needs, wants, demand, the four Ps, the drivers, complexity factors, BoP, and ethics.</li>
+            </ul>
+            <div class="takeaway" style="margin-top:14px;"><p><b>Why it matters:</b> anyone with the file can re-run the analysis, change the assumptions, and test whether the conclusions hold.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 37 IMPLICATIONS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Review &amp; Resources</p><h2>Strategic, tactical &amp; operational implications</h2></div>
+          <div class="slide-no">37</div>
+        </header>
+        <div class="content three">
+          <div class="panel accent-teal">
+            <h3>Strategic</h3>
+            <p>Begins with a SWOT analysis, then a choice among broad differentiation, low-cost, or best-cost.</p>
+            <ul class="list" style="margin-top:8px;"><li>Apple: broad differentiation.</li><li>Samsung: best-cost across many segments.</li></ul>
+          </div>
+          <div class="panel accent-gold">
+            <h3>Tactical</h3>
+            <p>Every mix element adjusts as a firm goes international; tactics must rest on deep understanding of each market.</p>
+            <ul class="list gold" style="margin-top:8px;"><li>Localized advertising and retail relationships.</li><li>Mistakes are assumed; rapid correction matters.</li></ul>
+          </div>
+          <div class="panel accent-coral">
+            <h3>Operational</h3>
+            <p>Day-to-day execution varies by market — payment, body language, bargaining, shipping standards.</p>
+            <ul class="list coral" style="margin-top:8px;"><li>Consistency with strategy and tactics is the goal.</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 38 KEY TERMS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Terms</p><h2>The vocabulary, in one place</h2></div>
+          <div class="slide-no">38</div>
+        </header>
+        <div class="content">
+          <div class="grid four" style="gap:10px; align-content:start;">
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:16px;">Business types</h3><ul class="list" style="gap:6px; font-size:13.5px;"><li>international marketing</li><li>multinational corporation</li><li>born-global firm</li><li>home / host country</li></ul></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:16px;">The mix &amp; market</h3><ul class="list green" style="gap:6px; font-size:13.5px;"><li>marketing &amp; marketing mix</li><li>market</li><li>needs · wants · demand</li><li>segmentation · target market</li></ul></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:16px;">Going global</h3><ul class="list gold" style="gap:6px; font-size:13.5px;"><li>positioning · differentiation</li><li>globalization</li><li>culture · language</li><li>political / legal systems</li></ul></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:16px;">Systems &amp; society</h3><ul class="list coral" style="gap:6px; font-size:13.5px;"><li>economic system</li><li>infrastructure</li><li>sustainability</li><li>bottom-of-the-pyramid</li></ul></div>
+          </div>
+          <div class="panel soft"><p>Every term above appears in a live demo or a case slide in this deck — the vocabulary is not just defined but exercised.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 39 REVIEW QUESTIONS ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Chapter 1 · Self-Check</p><h2>Could you answer these?</h2></div>
+          <div class="slide-no">39</div>
+        </header>
+        <div class="content two">
+          <div class="panel accent-teal">
+            <h3>Review questions</h3>
+            <ul class="list">
+              <li>What is the difference between marketing and international marketing?</li>
+              <li>What are the four Ps, and what is in the promotional mix?</li>
+              <li>How do wants lead to demand?</li>
+              <li>Define globalization and its four drivers.</li>
+              <li>Name the five complexity factors.</li>
+              <li>Define sustainability and the bottom-of-the-pyramid.</li>
+              <li>Contrast cultural relativism with the justice approach.</li>
+            </ul>
+          </div>
+          <div class="panel accent-samsung soft">
+            <h3>Discussion prompts (applied to the case)</h3>
+            <ul class="list samsung">
+              <li>How is each firm's marketing mix kept consistent — or adapted — across markets?</li>
+              <li>Which drivers of globalization most helped Samsung, and how?</li>
+              <li>Where does each firm sit on the standardization–adaptation scale, and why?</li>
+              <li>Has international complexity helped or hurt Apple more than Samsung?</li>
+            </ul>
+            <p style="margin-top:12px; font-size:14px; color:var(--soft);">Use the live demos to argue your answer with numbers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 40 CONCLUSION ===== -->
+      <section class="slide">
+        <header class="slide-head">
+          <div><p class="kicker">Conclusion</p><h2>What the case teaches</h2></div>
+          <div class="slide-no">40</div>
+        </header>
+        <div class="content split-wide">
+          <div class="panel accent-teal">
+            <div class="quote">"The essence of marketing remains the same, whether in domestic or international settings — what changes is how much of the mix must adapt."</div>
+            <div class="quote-by">— Adapted from Chapter 1, Introduction to International Marketing</div>
+          </div>
+          <div class="grid two" style="align-content:start; gap:10px;">
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:15.5px;">1 · Two valid strategies</h3><p style="font-size:13.5px;">Apple differentiates by being singular and premium; Samsung differentiates by covering the whole market and adapting locally.</p></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:15.5px;">2 · Q1 — the 5C</h3><p style="font-size:13.5px;">Right instinct (serve price-sensitive segments, protect the brand), imperfect price point in low-income markets.</p></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:15.5px;">3 · Q2 — Samsung</h3><p style="font-size:13.5px;">Full-range products, regional adaptation, research depth, and aggressive promotion reach buyers a single flagship cannot.</p></div>
+            <div class="panel soft" style="padding:14px;"><h3 style="font-size:15.5px;">4 · The method</h3><p style="font-size:13.5px;">Eleven live programs turn a static case into something you can test, tune, and re-run.</p></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="controls">
+      <button class="nav-btn" id="prev" aria-label="Previous slide">‹</button>
+      <div>
+        <div class="progress"><span id="progressBar"></span></div>
+        <div class="dots" id="dots"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span class="counter" id="counter">1 / 40</span>
+        <button class="nav-btn" id="next" aria-label="Next slide">›</button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    "use strict";
+
+    /* ============ NAVIGATION ============ */
+    const slides = [...document.querySelectorAll(".slide")];
+    const dots = document.getElementById("dots");
+    const progressBar = document.getElementById("progressBar");
+    const counter = document.getElementById("counter");
+    const tooltip = document.getElementById("tooltip");
+    let current = 0;
+
+    slides.forEach((slide, i) => {
+      const no = slide.querySelector(".slide-no");
+      if (no) no.textContent = String(i + 1).padStart(2, "0");
+      const dot = document.createElement("button");
+      dot.className = "dot-nav" + (i === 0 ? " active" : "");
+      dot.setAttribute("aria-label", `Go to slide ${i + 1}`);
+      dot.addEventListener("click", () => go(i));
+      dots.appendChild(dot);
+    });
+
+    function go(index) {
+      current = Math.max(0, Math.min(slides.length - 1, index));
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+      [...dots.children].forEach((dot, i) => dot.classList.toggle("active", i === current));
+      progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      initActiveSlide();
+    }
+
+    document.getElementById("prev").addEventListener("click", () => go(current - 1));
+    document.getElementById("next").addEventListener("click", () => go(current + 1));
+    document.addEventListener("keydown", (event) => {
+      const tag = (event.target && event.target.tagName) || "";
+      const typing = tag === "INPUT" || tag === "TEXTAREA";
+      if (typing && (event.key === "ArrowLeft" || event.key === "ArrowRight")) return;
+      if (["ArrowRight", "PageDown"].includes(event.key)) { event.preventDefault(); go(current + 1); }
+      if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); go(current - 1); }
+      if (event.key === "Home") go(0);
+      if (event.key === "End") go(slides.length - 1);
+    });
+
+    // Robust: re-draw whatever programs live on the active slide.
+    function initActiveSlide() {
+      const s = slides[current];
+      if (!s) return;
+      if (s.querySelector("#mix-map")) drawMixMap();
+      if (s.querySelector("#glob-markets")) renderGlob();
+      if (s.querySelector("#cx-radar")) drawRadar();
+      if (s.querySelector("#adapt-chart")) drawAdapt();
+      if (s.querySelector("#seg-tiers")) renderSegTiers();
+      if (s.querySelector("#bop-bars")) runBop();
+      if (s.querySelector("#orient-track") && currentOrient !== null) selectOrient(currentOrient);
+    }
+
+    const $ = id => document.getElementById(id);
+
+    /* ============ PROGRAM 1 — ORIENTATION EXPLORER ============ */
+    const orientations = [
+      { key: "ethno",  name: "Ethnocentric", sub: "home-country run", ctrl: 90, adapt: 25,
+        desc: "Home-country employees and policies run operations abroad. <strong>High control</strong> and fast competency transfer, but weak local adaptation and possible resistance from host employees and consumers.",
+        firms: "Closest to <strong>early Apple</strong> — one product and playbook exported with little change." },
+      { key: "poly",   name: "Polycentric", sub: "locals run host", ctrl: 45, adapt: 80,
+        desc: "Locals run host-country operations, adapting quickly and often more cheaply. The main risk is weak coordination and communication across units.",
+        firms: "Leans toward <strong>Samsung's</strong> regionally tuned product lines." },
+      { key: "regio",  name: "Regiocentric", sub: "region-based", ctrl: 60, adapt: 65,
+        desc: "Managers are drawn from a region (e.g., the Pacific Rim). Knowledge transfers within the region; the challenge is controlling a diverse set of employees.",
+        firms: "Both firms use regional hubs for marketing and research." },
+      { key: "geo",     name: "Geocentric", sub: "global", ctrl: 70, adapt: 78,
+        desc: "Best people and systems regardless of country — a truly global orientation that adapts fastest, at higher search and coordination cost.",
+        firms: "<strong>Samsung's</strong> 60,000-person global research network points this way; large MNCs are the natural candidates." }
+    ];
+    let currentOrient = null;
+
+    function buildOrientTrack() {
+      const t = $("orient-track");
+      if (!t) return;
+      t.innerHTML = "";
+      orientations.forEach((o, i) => {
+        const el = document.createElement("div");
+        el.className = "orient-step";
+        el.innerHTML = `<div class="on-name">${o.name}</div><div class="on-sub">${o.sub}</div>`;
+        el.addEventListener("click", () => selectOrient(i));
+        t.appendChild(el);
+      });
+    }
+    function selectOrient(i) {
+      currentOrient = i;
+      const o = orientations[i];
+      const t = $("orient-track");
+      if (t) [...t.children].forEach((c, j) => c.classList.toggle("active", j === i));
+      if ($("orient-desc")) $("orient-desc").innerHTML = `<strong>${o.name}.</strong> ${o.desc}`;
+      if ($("orient-firms")) $("orient-firms").innerHTML = o.firms;
+      const cf = $("orient-ctrl"), af = $("orient-adapt");
+      if (cf) { cf.style.width = o.ctrl + "%"; cf.textContent = o.ctrl; }
+      if (af) { af.style.width = o.adapt + "%"; af.textContent = o.adapt; }
+      if ($("orient-ctrl-v")) $("orient-ctrl-v").textContent = o.ctrl;
+      if ($("orient-adapt-v")) $("orient-adapt-v").textContent = o.adapt;
+    }
+    buildOrientTrack();
+
+    /* ============ PROGRAM 2 — MARKETING MIX MAP ============ */
+    const mixState = {
+      apple:   { product: 90, price: 85, place: 70, promo: 65 },
+      samsung: { product: 75, price: 45, place: 85, promo: 88 }
+    };
+    const mixPs = [
+      { key: "product", label: "Product", hint: "basic ↔ premium" },
+      { key: "price",   label: "Price",   hint: "value ↔ premium" },
+      { key: "place",   label: "Place",   hint: "narrow ↔ wide reach" },
+      { key: "promo",   label: "Promotion", hint: "restrained ↔ aggressive" }
+    ];
+    let mixBrand = "apple";
+
+    function renderMixSliders() {
+      const box = $("mix-sliders");
+      if (!box) return;
+      const st = mixState[mixBrand];
+      box.innerHTML = "";
+      mixPs.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "slider-row";
+        row.innerHTML = `<label>${p.label}<br><span style="font-weight:400; color:var(--soft); font-size:11.5px;">${p.hint}</span></label>
+          <input type="range" min="0" max="100" value="${st[p.key]}" class="${mixBrand}" data-p="${p.key}">
+          <span class="val">${st[p.key]}</span>`;
+        const input = row.querySelector("input"), val = row.querySelector(".val");
+        input.addEventListener("input", e => { st[p.key] = Number(e.target.value); val.textContent = e.target.value; drawMixMap(); });
+        box.appendChild(row);
+      });
+      updateMixStatus();
+    }
+    function mixPosition(st) { return { x: st.price, y: (st.place + st.promo) / 2 }; }
+    function drawMixMap() {
+      const svg = $("mix-map");
+      if (!svg) return;
+      const W = 420, H = 300, pad = 44;
+      const sx = v => pad + (v / 100) * (W - pad - 16);
+      const sy = v => (H - pad) - (v / 100) * (H - pad - 16);
+      let g = `<line class="axis" x1="${pad}" y1="${H-pad}" x2="${W-16}" y2="${H-pad}"></line><line class="axis" x1="${pad}" y1="16" x2="${pad}" y2="${H-pad}"></line>`;
+      [25,50,75].forEach(v => { g += `<line class="gridline" x1="${sx(v)}" y1="16" x2="${sx(v)}" y2="${H-pad}"></line><line class="gridline" x1="${pad}" y1="${sy(v)}" x2="${W-16}" y2="${sy(v)}"></line>`; });
+      g += `<text class="axis-title" x="${(W+pad)/2}" y="${H-8}" text-anchor="middle">Price  (value → premium)</text>`;
+      g += `<text class="axis-title" x="14" y="${(H-pad)/2}" text-anchor="middle" transform="rotate(-90 14 ${(H-pad)/2})">Market reach</text>`;
+      const brands = [{ k:"apple", c:"#4a4a4f", l:"Apple" }, { k:"samsung", c:"#1655b8", l:"Samsung" }];
+      brands.forEach(b => {
+        const pos = mixPosition(mixState[b.k]); const cx = sx(pos.x), cy = sy(pos.y); const active = b.k === mixBrand;
+        g += `<circle cx="${cx}" cy="${cy}" r="${active ? 22 : 0}" fill="none" stroke="${b.c}" stroke-width="2" opacity="0.4"></circle>
+          <circle cx="${cx}" cy="${cy}" r="${active ? 16 : 12}" fill="${b.c}" opacity="${active ? 0.92 : 0.55}"></circle>
+          <text x="${cx}" y="${cy - (active ? 26 : 20)}" text-anchor="middle" fill="${b.c}" font-size="13" font-weight="700" font-family="Outfit,sans-serif">${b.l}</text>`;
+      });
+      svg.innerHTML = g;
+    }
+    function updateMixStatus() {
+      const st = mixState[mixBrand], pos = mixPosition(st), status = $("mix-status");
+      if (!status) return;
+      let desc;
+      if (pos.x >= 65 && pos.y <= 60) desc = "a <strong>premium, focused</strong> position — high price, narrower reach. Classic Apple differentiation.";
+      else if (pos.x < 55 && pos.y >= 65) desc = "a <strong>value, broad-reach</strong> position — lower price, wide coverage. Classic Samsung multi-segment play.";
+      else if (pos.x >= 65 && pos.y >= 65) desc = "a <strong>premium and broad</strong> position — expensive to sustain, but maximal coverage.";
+      else desc = "a <strong>mid-market</strong> position — moderate price and reach.";
+      status.innerHTML = `<strong>${mixBrand === "apple" ? "Apple" : "Samsung"}'s mix</strong> maps to ${desc}`;
+    }
+    document.querySelectorAll("[data-mixbrand]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        mixBrand = btn.dataset.mixbrand;
+        document.querySelectorAll("[data-mixbrand]").forEach(b => b.classList.toggle("active", b === btn));
+        renderMixSliders(); drawMixMap();
+      });
+    });
+
+    /* ============ PROGRAM 3 — NEEDS LADDER ============ */
+    const needs = [
+      { name: "Self-actualization", tag: "highest", ex: "Meeting one's potential; meaningful work and self-expression.",
+        phone: "A phone as a creative tool — pro cameras, music, content creation. <strong>Apple</strong> leans here: the device as an extension of identity and craft.",
+        want: "\u201cI want a phone that lets me create and express who I am.\u201d" },
+      { name: "Love & belonging", tag: "social", ex: "Connection, relationships, and group membership.",
+        phone: "Messaging, social media, video calls, shared photos. Both brands sell belonging; iMessage/FaceTime vs. open Android sharing.",
+        want: "\u201cI want a phone that keeps me close to the people I care about.\u201d" },
+      { name: "Safety", tag: "security", ex: "Protection, security, and reliability.",
+        phone: "Emergency calls, find-my-device, secure payments, durable build. A reason flagships justify a premium.",
+        want: "\u201cI want a phone I can rely on and that keeps my data safe.\u201d" },
+      { name: "Physiological", tag: "basic", ex: "The base necessities; here, basic communication access.",
+        phone: "Affordable access to calls and the internet at all. This is the <strong>bottom-of-the-pyramid</strong> tier <strong>Samsung's</strong> cheap Android phones serve.",
+        want: "\u201cI want a phone I can actually afford that lets me communicate.\u201d" }
+    ];
+    function buildNeeds() {
+      const box = $("needs-ladder");
+      if (!box) return;
+      box.innerHTML = "";
+      needs.forEach((n, i) => {
+        const el = document.createElement("div");
+        el.className = "rung";
+        el.innerHTML = `<div><div class="rname">${n.name}</div><div class="rtag">${n.tag}</div></div><div class="rex">${n.ex}</div>`;
+        el.addEventListener("click", () => selectNeed(i));
+        box.appendChild(el);
+      });
+    }
+    function selectNeed(i) {
+      const box = $("needs-ladder");
+      if (box) [...box.children].forEach((c, j) => c.classList.toggle("active", j === i));
+      if ($("needs-detail")) $("needs-detail").innerHTML = `<strong>${needs[i].name} need.</strong> ${needs[i].phone}`;
+      if ($("needs-want")) $("needs-want").innerHTML = `<span class="pos-line">${needs[i].want}</span><br><span style="font-size:13px; color:var(--soft);">A want is this need aimed at a specific object — the phone.</span>`;
+    }
+    buildNeeds();
+
+    /* ============ PROGRAM 4 — POSITIONING BUILDER ============ */
+    const posOpts = {
+      seg: [
+        { id:"premium", label:"Affluent professionals", d:3, c:3 },
+        { id:"youth",   label:"Trend-driven youth",     d:2, c:3 },
+        { id:"budget",  label:"Price-sensitive / BoP",  d:3, c:2 },
+        { id:"business",label:"Enterprise buyers",      d:2, c:3 }
+      ],
+      diff: [
+        { id:"ecosystem", label:"Integrated ecosystem", d:3, c:3 },
+        { id:"design",    label:"Design & status",       d:3, c:2 },
+        { id:"range",     label:"Choice & range",        d:2, c:3 },
+        { id:"value",     label:"Best value for money",  d:2, c:3 }
+      ],
+      price: [
+        { id:"premiumP", label:"Premium price", d:3, c:2 },
+        { id:"midP",     label:"Mid price",     d:1, c:3 },
+        { id:"valueP",   label:"Value price",   d:2, c:3 }
+      ]
+    };
+    const posPick = { seg: 0, diff: 0, price: 0 };
+    function buildPosPickers() {
+      [["seg","pos-seg"],["diff","pos-diff"],["price","pos-price"]].forEach(([k, elId]) => {
+        const box = $(elId);
+        if (!box) return;
+        box.innerHTML = "";
+        posOpts[k].forEach((o, i) => {
+          const c = document.createElement("button");
+          c.className = "chip" + (i === 0 ? " on" : "");
+          c.textContent = o.label;
+          c.addEventListener("click", () => {
+            posPick[k] = i;
+            [...box.children].forEach((ch, j) => ch.classList.toggle("on", j === i));
+            renderPos();
+          });
+          box.appendChild(c);
+        });
+      });
+      renderPos();
+    }
+    function renderPos() {
+      const seg = posOpts.seg[posPick.seg], diff = posOpts.diff[posPick.diff], price = posOpts.price[posPick.price];
+      const out = $("pos-out");
+      if (out) out.innerHTML = `<span class="pos-line">For ${seg.label.toLowerCase()}, our phone is the brand that delivers ${diff.label.toLowerCase()} at a ${price.label.toLowerCase()}.</span>`;
+      // distinctiveness & credibility, plus coherence bonus/penalty
+      let d = (seg.d + diff.d + price.d) / 9 * 100;
+      let c = (seg.c + diff.c + price.c) / 9 * 100;
+      // coherence: premium price + value differentiation is incoherent; value price + ecosystem is too
+      const incoherent = (price.id === "premiumP" && diff.id === "value") || (price.id === "valueP" && diff.id === "ecosystem");
+      const coherent = (price.id === "premiumP" && (diff.id === "ecosystem" || diff.id === "design")) || (price.id === "valueP" && diff.id === "value");
+      if (incoherent) c -= 22;
+      if (coherent) c += 10;
+      d = Math.max(8, Math.min(100, Math.round(d)));
+      c = Math.max(8, Math.min(100, Math.round(c)));
+      const df = $("pos-d"), cf = $("pos-c");
+      if (df) { df.style.width = d + "%"; df.textContent = d; }
+      if (cf) { cf.style.width = c + "%"; cf.textContent = c; }
+      if ($("pos-d-v")) $("pos-d-v").textContent = d;
+      if ($("pos-c-v")) $("pos-c-v").textContent = c;
+    }
+    buildPosPickers();
+
+    /* ============ PROGRAM 5 — GLOBALIZATION DRIVERS ============ */
+    const globDrivers = [
+      { name: "Channels of Communication", on: false, weight: 28 },
+      { name: "Lower Transportation Costs", on: false, weight: 22 },
+      { name: "Immigration & Emigration",   on: false, weight: 20 },
+      { name: "Governmental Actions",        on: false, weight: 30 }
+    ];
+    const globMarkets = [
+      { name: "Home market (US)", threshold: 0 },
+      { name: "Developed (Europe)", threshold: 25 },
+      { name: "Greater China", threshold: 45 },
+      { name: "India (#3 market)", threshold: 70 },
+      { name: "Emerging / BoP markets", threshold: 90 }
+    ];
+    function buildGlobToggles() {
+      const box = $("glob-toggles");
+      if (!box) return;
+      box.innerHTML = "";
+      globDrivers.forEach(d => {
+        const row = document.createElement("label");
+        row.style.cssText = "display:flex; align-items:center; gap:12px; cursor:pointer; padding:11px 14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-soft); font-weight:600; color:var(--text); font-size:14.5px;";
+        row.innerHTML = `<input type="checkbox" style="width:18px; height:18px; accent-color:var(--teal); cursor:pointer;" ${d.on ? "checked" : ""}><span style="flex:1;">${d.name}</span><span style="font-family:'JetBrains Mono',monospace; color:var(--soft); font-size:12px;">+${d.weight}</span>`;
+        row.querySelector("input").addEventListener("change", e => { d.on = e.target.checked; renderGlob(); });
+        box.appendChild(row);
+      });
+    }
+    function renderGlob() {
+      const score = globDrivers.reduce((s, d) => s + (d.on ? d.weight : 0), 0);
+      if ($("glob-score")) $("glob-score").textContent = `${score} / 100`;
+      const box = $("glob-markets");
+      if (box) {
+        box.innerHTML = "";
+        globMarkets.forEach(m => {
+          const open = score >= m.threshold;
+          const row = document.createElement("div");
+          row.style.cssText = `display:flex; align-items:center; gap:12px; padding:9px 12px; margin-bottom:7px; border-radius:8px; border:1px solid ${open ? "rgba(47,158,87,.45)" : "var(--line-soft)"}; background:${open ? "rgba(47,158,87,.08)" : "transparent"}; transition:all .4s ease;`;
+          row.innerHTML = `<span style="font-size:18px;">${open ? "\u{1F513}" : "\u{1F512}"}</span><span style="flex:1; font-weight:600; color:${open ? "var(--text)" : "var(--soft)"}; font-size:14.5px;">${m.name}</span><span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--soft);">need ${m.threshold}</span>`;
+          box.appendChild(row);
+        });
+      }
+      const reachable = globMarkets.filter(m => score >= m.threshold).length;
+      const status = $("glob-status");
+      if (status) {
+        if (score === 0) status.innerHTML = "No drivers active — only the <strong>home market</strong> is reachable. A purely domestic firm.";
+        else if (score >= 90) status.innerHTML = `<strong>All four drivers active (score ${score}).</strong> Every tier opens, including bottom-of-the-pyramid markets — the fully globalized position Samsung exploited.`;
+        else status.innerHTML = `Score <strong>${score}</strong> opens <strong>${reachable} of ${globMarkets.length}</strong> market tiers. Add more drivers to reach price-sensitive emerging markets.`;
+      }
+    }
+    buildGlobToggles();
+    $("glob-all")?.addEventListener("click", () => { globDrivers.forEach(d => d.on = true); buildGlobToggles(); renderGlob(); });
+    $("glob-none")?.addEventListener("click", () => { globDrivers.forEach(d => d.on = false); buildGlobToggles(); renderGlob(); });
+
+    /* ============ PROGRAM 6 — COMPLEXITY RADAR ============ */
+    const cxFactors = ["Culture", "Language", "Political/Legal", "Economic", "Infrastructure"];
+    const cxPresets = {
+      india:  [70, 80, 65, 85, 75],
+      china:  [75, 70, 80, 60, 45],
+      europe: [40, 55, 35, 25, 20],
+      custom: [50, 50, 50, 50, 50]
+    };
+    let cxMarket = "india";
+    let cxVals = [...cxPresets.india];
+
+    function buildCxSliders() {
+      const box = $("cx-sliders");
+      if (!box) return;
+      box.innerHTML = "";
+      cxFactors.forEach((f, i) => {
+        const row = document.createElement("div");
+        row.className = "slider-row";
+        const disabled = cxMarket !== "custom" ? "disabled" : "";
+        row.innerHTML = `<label>${f}</label><input type="range" min="0" max="100" value="${cxVals[i]}" data-cx="${i}" ${disabled} style="${disabled?'opacity:.5;':''}"><span class="val">${cxVals[i]}</span>`;
+        const input = row.querySelector("input"), val = row.querySelector(".val");
+        input.addEventListener("input", e => { cxVals[i] = Number(e.target.value); val.textContent = e.target.value; drawRadar(); });
+        box.appendChild(row);
+      });
+    }
+    function drawRadar() {
+      const svg = $("cx-radar");
+      if (!svg) return;
+      const cx = 180, cy = 150, R = 110, n = cxFactors.length;
+      const ang = i => (-Math.PI / 2) + (i * 2 * Math.PI / n);
+      let g = "";
+      // rings
+      [0.25, 0.5, 0.75, 1].forEach(r => {
+        let pts = [];
+        for (let i = 0; i < n; i++) pts.push(`${(cx + Math.cos(ang(i)) * R * r).toFixed(1)},${(cy + Math.sin(ang(i)) * R * r).toFixed(1)}`);
+        g += `<polygon points="${pts.join(" ")}" fill="none" stroke="rgba(31,28,22,.10)" stroke-width="1"></polygon>`;
+      });
+      // spokes + labels
+      for (let i = 0; i < n; i++) {
+        const x = cx + Math.cos(ang(i)) * R, y = cy + Math.sin(ang(i)) * R;
+        g += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(31,28,22,.12)" stroke-width="1"></line>`;
+        const lx = cx + Math.cos(ang(i)) * (R + 26), ly = cy + Math.sin(ang(i)) * (R + 20);
+        const anchor = Math.abs(Math.cos(ang(i))) < 0.3 ? "middle" : (Math.cos(ang(i)) > 0 ? "start" : "end");
+        g += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" fill="var(--muted)" font-size="11.5" font-weight="600" font-family="Outfit,sans-serif">${cxFactors[i]}</text>`;
+      }
+      // data polygon
+      let dpts = [];
+      for (let i = 0; i < n; i++) { const r = cxVals[i] / 100; dpts.push(`${(cx + Math.cos(ang(i)) * R * r).toFixed(1)},${(cy + Math.sin(ang(i)) * R * r).toFixed(1)}`); }
+      g += `<polygon points="${dpts.join(" ")}" fill="rgba(15,138,138,.20)" stroke="var(--teal)" stroke-width="2.5"></polygon>`;
+      for (let i = 0; i < n; i++) { const r = cxVals[i] / 100; g += `<circle cx="${(cx + Math.cos(ang(i)) * R * r).toFixed(1)}" cy="${(cy + Math.sin(ang(i)) * R * r).toFixed(1)}" r="3.5" fill="var(--teal)"></circle>`; }
+      svg.innerHTML = g;
+      const avg = Math.round(cxVals.reduce((a, b) => a + b, 0) / n);
+      const status = $("cx-status");
+      if (status) {
+        let label = avg >= 70 ? "<strong>high</strong> — the mix needs heavy adaptation" : avg >= 45 ? "<strong>moderate</strong> — selective adaptation" : "<strong>low</strong> — light adaptation, mostly standardize";
+        const name = { india:"India", china:"China", europe:"Europe", custom:"this custom market" }[cxMarket];
+        status.innerHTML = `Adaptation-effort score for ${name}: <strong style="color:var(--teal); font-family:'JetBrains Mono',monospace;">${avg}/100</strong> — ${label}.`;
+      }
+    }
+    document.querySelectorAll("[data-market]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        cxMarket = btn.dataset.market;
+        cxVals = [...cxPresets[cxMarket]];
+        document.querySelectorAll("[data-market]").forEach(b => b.classList.toggle("active", b === btn));
+        buildCxSliders(); drawRadar();
+      });
+    });
+    buildCxSliders();
+
+    /* ============ PROGRAM 7 — ADAPTATION SIMULATOR ============ */
+    const adaptParams = [
+      { key: "level", label: "Adaptation level", hint: "standardize → adapt", value: 50 },
+      { key: "diff",  label: "Market difference", hint: "how unlike home", value: 60 }
+    ];
+    function buildAdaptSliders() {
+      const box = $("adapt-sliders");
+      if (!box) return;
+      box.innerHTML = "";
+      adaptParams.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "slider-row";
+        row.innerHTML = `<label>${p.label}<br><span style="font-weight:400; color:var(--soft); font-size:11.5px;">${p.hint}</span></label><input type="range" min="0" max="100" value="${p.value}" data-ad="${p.key}"><span class="val">${p.value}</span>`;
+        const input = row.querySelector("input"), val = row.querySelector(".val");
+        input.addEventListener("input", e => { p.value = Number(e.target.value); val.textContent = e.target.value; drawAdapt(); });
+        box.appendChild(row);
+      });
+    }
+    // payoff(level) = fit benefit - cost; fit benefit scales with market difference
+    function adaptPayoff(level, diff) {
+      const L = level / 100, D = diff / 100;
+      const fit = D * Math.sqrt(L);          // diminishing returns on adaptation
+      const cost = 0.55 * L * L;             // adaptation cost grows quadratically
+      const base = 0.35;                     // baseline value of selling at all
+      return { fit, cost, net: base + fit - cost };
+    }
+    function drawAdapt() {
+      const level = adaptParams[0].value, diff = adaptParams[1].value;
+      const r = adaptPayoff(level, diff);
+      if ($("adapt-fit")) $("adapt-fit").textContent = (r.fit * 100).toFixed(0);
+      if ($("adapt-cost")) $("adapt-cost").textContent = (r.cost * 100).toFixed(0);
+      if ($("adapt-net")) $("adapt-net").textContent = (r.net * 100).toFixed(0);
+      // find optimum level for current diff
+      let bestL = 0, bestNet = -1;
+      for (let l = 0; l <= 100; l++) { const nn = adaptPayoff(l, diff).net; if (nn > bestNet) { bestNet = nn; bestL = l; } }
+      const status = $("adapt-status");
+      if (status) {
+        let where = level < bestL - 8 ? "You're <strong>under-adapting</strong> — more local tailoring would pay off here." :
+                    level > bestL + 8 ? "You're <strong>over-adapting</strong> — cost is outrunning the fit benefit." :
+                    "You're near the <strong>optimal</strong> adaptation level for this market.";
+        status.innerHTML = `${where} Optimum ≈ <strong style="font-family:'JetBrains Mono',monospace; color:var(--teal);">${bestL}</strong>. Low difference favors Apple-style standardization; high difference favors Samsung-style adaptation.`;
+      }
+      // chart
+      const svg = $("adapt-chart");
+      if (!svg) return;
+      const W = 420, H = 250, pad = { l: 38, r: 14, t: 14, b: 34 };
+      const sx = v => pad.l + (v / 100) * (W - pad.l - pad.r);
+      const sy = v => (H - pad.b) - (v) * (H - pad.t - pad.b); // v in 0..1.x
+      let maxNet = 1.0;
+      for (let l = 0; l <= 100; l++) maxNet = Math.max(maxNet, adaptPayoff(l, diff).net);
+      const syN = v => (H - pad.b) - (v / maxNet) * (H - pad.t - pad.b);
+      let g = `<line class="axis" x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}"></line><line class="axis" x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}"></line>`;
+      [0,25,50,75,100].forEach(v => { g += `<text class="axis-label" x="${sx(v)}" y="${H-12}" text-anchor="middle">${v}</text>`; });
+      g += `<text class="axis-title" x="${(W)/2}" y="${H-2}" text-anchor="middle">adaptation level</text>`;
+      // curve
+      let path = "";
+      for (let l = 0; l <= 100; l += 2) { const yy = syN(adaptPayoff(l, diff).net); path += `${l === 0 ? "M" : "L"}${sx(l).toFixed(1)},${yy.toFixed(1)} `; }
+      g += `<path d="${path}" fill="none" stroke="var(--teal)" stroke-width="3"></path>`;
+      // optimum marker
+      g += `<line x1="${sx(bestL)}" y1="${pad.t}" x2="${sx(bestL)}" y2="${H-pad.b}" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 4"></line>`;
+      g += `<circle cx="${sx(bestL)}" cy="${syN(bestNet)}" r="5" fill="var(--gold)"></circle>`;
+      g += `<text x="${sx(bestL)}" y="${pad.t+12}" text-anchor="middle" fill="var(--gold)" font-size="11" font-weight="700">optimum</text>`;
+      // current marker
+      g += `<circle cx="${sx(level)}" cy="${syN(r.net)}" r="6" fill="var(--samsung)" stroke="#fff" stroke-width="2"></circle>`;
+      svg.innerHTML = g;
+    }
+    buildAdaptSliders();
+
+    /* ============ PROGRAM 8 — BOTTOM-OF-THE-PYRAMID MODEL ============ */
+    const bopParams = [
+      { key: "pop",   label: "Reachable buyers", hint: "millions in the segment", value: 800, min: 50, max: 4000, step: 50, unit: "M" },
+      { key: "adopt", label: "Adoption rate", hint: "% who buy", value: 8, min: 1, max: 40, step: 1, unit: "%" },
+      { key: "bprofit", label: "Budget profit/unit", hint: "$ per phone", value: 6, min: 1, max: 40, step: 1, unit: "$" },
+      { key: "pprofit", label: "Premium profit/unit", hint: "$ per phone", value: 180, min: 50, max: 400, step: 10, unit: "$" },
+      { key: "pshare", label: "Premium reach", hint: "% of segment who could afford premium", value: 4, min: 1, max: 30, step: 1, unit: "%" }
+    ];
+    function buildBopSliders() {
+      const box = $("bop-sliders");
+      if (!box) return;
+      box.innerHTML = "";
+      bopParams.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "slider-row";
+        row.innerHTML = `<label>${p.label}<br><span style="font-weight:400; color:var(--soft); font-size:11.5px;">${p.hint}</span></label><input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.value}" data-bop="${p.key}"><span class="val">${fmtBop(p)}</span>`;
+        const input = row.querySelector("input"), val = row.querySelector(".val");
+        input.addEventListener("input", e => { p.value = Number(e.target.value); val.textContent = fmtBop(p); runBop(); });
+        box.appendChild(row);
+      });
+    }
+    function fmtBop(p) { return p.unit === "$" ? `$${p.value}` : `${p.value}${p.unit}`; }
+    function money(n) {
+      if (n >= 1e9) return "$" + (n / 1e9).toFixed(1) + "B";
+      if (n >= 1e6) return "$" + (n / 1e6).toFixed(0) + "M";
+      if (n >= 1e3) return "$" + (n / 1e3).toFixed(0) + "K";
+      return "$" + Math.round(n);
+    }
+    function runBop() {
+      const g = k => bopParams.find(p => p.key === k).value;
+      const popUnits = g("pop") * 1e6;
+      const budgetBuyers = popUnits * (g("adopt") / 100);
+      const premiumBuyers = popUnits * (g("pshare") / 100);
+      const budgetProfit = budgetBuyers * g("bprofit");
+      const premiumProfit = premiumBuyers * g("pprofit");
+      if ($("bop-budget")) $("bop-budget").textContent = money(budgetProfit);
+      if ($("bop-premium")) $("bop-premium").textContent = money(premiumProfit);
+      const maxV = Math.max(budgetProfit, premiumProfit, 1);
+      const box = $("bop-bars");
+      if (box) {
+        box.innerHTML = "";
+        [["Budget phone", budgetProfit, "samsung"], ["Premium phone", premiumProfit, "apple"]].forEach(([n, v, cls]) => {
+          const pct = Math.round((v / maxV) * 100);
+          const row = document.createElement("div");
+          row.className = "seg-row";
+          row.innerHTML = `<span class="seg-name">${n}</span><div class="seg-track"><div class="seg-fill ${cls}" style="width:0%">${money(v)}</div></div>`;
+          box.appendChild(row);
+          requestAnimationFrame(() => { row.querySelector(".seg-fill").style.width = pct + "%"; });
+        });
+      }
+      const status = $("bop-status");
+      if (status) {
+        const ratio = premiumProfit > 0 ? budgetProfit / premiumProfit : 0;
+        if (budgetProfit > premiumProfit) status.innerHTML = `At these settings the <strong style="color:var(--samsung)">budget phone earns more in total</strong> (${ratio.toFixed(1)}× the premium phone) — Prahalad's point: tiny margins × huge volume beat fat margins × few buyers.`;
+        else status.innerHTML = `Here the <strong style="color:var(--apple)">premium phone still wins on total profit</strong>. Raise reachable buyers or adoption and watch the budget bar overtake it — the bottom-of-the-pyramid threshold.`;
+      }
+    }
+    buildBopSliders();
+
+    /* ============ PROGRAM 9 — ETHICS LENS ============ */
+    const ethicsCases = [
+      { name: "Selling a banned pesticide abroad",
+        rel: "If the host country permits a pesticide that's banned at home, relativism says local law is the standard — selling it there is acceptable because that culture allows it.",
+        jus: "Justice says treat people consistently everywhere. If the product is unsafe enough to ban at home, fairness forbids exposing host-country consumers to it regardless of local law." },
+      { name: "Lower wages in a low-cost country",
+        rel: "Relativism says pay the locally prevailing wage — what's accepted in that market is the right standard for doing business there.",
+        jus: "Justice (distributive) calls for fair, comparable pay and conditions across all countries where the firm operates, not just the local minimum." },
+      { name: "Gift-giving that looks like a bribe",
+        rel: "Relativism says follow local custom — if generous gifts are a normal part of doing business there, they're ethical in that context.",
+        jus: "Justice (procedural) says apply the same fair rules everywhere; if it would be improper at home, it stays improper abroad." },
+      { name: "Marketing a flagship phone to buyers who can't afford it",
+        rel: "Relativism would defer to local norms about aspirational spending and advertising freedom in that market.",
+        jus: "Justice asks whether the promotion is fair and honest to vulnerable, lower-income consumers — the same standard applied in every market." }
+    ];
+    let ethicsIdx = -1;
+    function buildEthics() {
+      const box = $("ethics-cases");
+      if (!box) return;
+      box.innerHTML = "";
+      ethicsCases.forEach((c, i) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.textContent = c.name;
+        b.addEventListener("click", () => {
+          ethicsIdx = i;
+          [...box.children].forEach((ch, j) => ch.classList.toggle("on", j === i));
+          if ($("ethics-rel")) $("ethics-rel").textContent = c.rel;
+          if ($("ethics-jus")) $("ethics-jus").textContent = c.jus;
+          if ($("ethics-note")) $("ethics-note").innerHTML = `Notice the two lenses reach <strong>different verdicts</strong> on the same facts — which is exactly why the chapter warns that relativism, taken to the extreme, can excuse practices the justice approach would reject.`;
+        });
+        box.appendChild(b);
+      });
+    }
+    buildEthics();
+
+    /* ============ PROGRAM 10 — PRICING MODEL (Q1) ============ */
+    const priceParams = [
+      { key: "premium", label: "Premium buyers", hint: "share willing to pay full price", value: 35, min: 5, max: 80, unit: "%" },
+      { key: "sens",    label: "Price sensitivity", hint: "how strongly low prices pull buyers", value: 60, min: 0, max: 100, unit: "" },
+      { key: "gap",     label: "5C discount", hint: "% below flagship", value: 25, min: 5, max: 60, unit: "%" }
+    ];
+    function buildPriceSliders() {
+      const box = $("price-sliders");
+      if (!box) return;
+      box.innerHTML = "";
+      priceParams.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "slider-row";
+        row.innerHTML = `<label>${p.label}<br><span style="font-weight:400; color:var(--soft); font-size:11.5px;">${p.hint}</span></label><input type="range" min="${p.min}" max="${p.max}" value="${p.value}" data-pk="${p.key}"><span class="val">${p.value}${p.unit}</span>`;
+        const input = row.querySelector("input"), val = row.querySelector(".val");
+        input.addEventListener("input", e => { p.value = Number(e.target.value); val.textContent = `${p.value}${p.unit}`; });
+        box.appendChild(row);
+      });
+    }
+    function evaluatePricing() {
+      const premium = priceParams.find(p => p.key === "premium").value / 100;
+      const sens = priceParams.find(p => p.key === "sens").value / 100;
+      const gap = priceParams.find(p => p.key === "gap").value;
+      const budget = 1 - premium;
+      const flagBuyers = premium + budget * (1 - sens) * 0.25;
+      const capture = sens * (gap / 100);
+      const newBudget = budget * capture;
+      const cannibalize = premium * capture * 0.4;
+      const flagRev = flagBuyers * 1.0;
+      const bothRev = (flagBuyers - cannibalize) * 1.0 + (newBudget + cannibalize) * (1 - gap / 100);
+      return { flagBuyers, newBudget, cannibalize, flagRev, bothRev };
+    }
+    function runPricing() {
+      const r = evaluatePricing();
+      const bars = [
+        { name: "Flagship only", v: r.flagBuyers, cls: "apple" },
+        { name: "Flagship + 5C", v: r.flagBuyers - r.cannibalize + r.newBudget + r.cannibalize, cls: "samsung" }
+      ];
+      const maxV = Math.max(bars[0].v, bars[1].v, 0.01);
+      const box = $("price-bars");
+      if (box) {
+        box.innerHTML = "";
+        bars.forEach(b => {
+          const pct = Math.round((b.v / maxV) * 100);
+          const row = document.createElement("div");
+          row.className = "seg-row";
+          row.innerHTML = `<span class="seg-name">${b.name}</span><div class="seg-track"><div class="seg-fill ${b.cls}" style="width:0%">${b.v.toFixed(2)}</div></div>`;
+          box.appendChild(row);
+          requestAnimationFrame(() => { row.querySelector(".seg-fill").style.width = pct + "%"; });
+        });
+      }
+      if ($("price-flag")) $("price-flag").textContent = (r.flagRev * 100).toFixed(0);
+      if ($("price-both")) $("price-both").textContent = (r.bothRev * 100).toFixed(0);
+      const lift = ((r.bothRev - r.flagRev) / r.flagRev) * 100;
+      const verdictEl = $("price-verdict");
+      if (verdictEl) { verdictEl.textContent = lift >= 0 ? "\u2713 worth it" : "\u2717 dilutive"; verdictEl.style.color = lift >= 0 ? "var(--green)" : "var(--coral)"; }
+      const status = $("price-status");
+      if (status) {
+        const nb = (r.newBudget * 100).toFixed(0), cn = (r.cannibalize * 100).toFixed(0);
+        if (lift >= 4) status.innerHTML = `Adding the 5C lifts the revenue index by <strong style="color:var(--green)">${lift.toFixed(1)}%</strong>. It wins ~${nb} new budget units vs. ~${cn} cannibalized — <strong>the right call</strong> under these assumptions.`;
+        else if (lift >= 0) status.innerHTML = `The 5C is roughly <strong>break-even</strong> (${lift.toFixed(1)}%): ~${nb} new units, ~${cn} cannibalized. Worth it mainly for reach and brand protection, not raw revenue.`;
+        else status.innerHTML = `Here the 5C is <strong style="color:var(--coral)">dilutive</strong> (${lift.toFixed(1)}%): only ~${nb} new units but ~${cn} cannibalized at a lower price. Too small a discount or too few true budget buyers — the case's real-world critique.`;
+      }
+    }
+    function resetPricing() {
+      priceParams[0].value = 35; priceParams[1].value = 60; priceParams[2].value = 25;
+      buildPriceSliders();
+      if ($("price-flag")) $("price-flag").textContent = "0";
+      if ($("price-both")) $("price-both").textContent = "0";
+      const v = $("price-verdict"); if (v) { v.textContent = "\u2014"; v.style.color = "var(--text)"; }
+      if ($("price-bars")) $("price-bars").innerHTML = "";
+      if ($("price-status")) $("price-status").innerHTML = "Press <strong>Run comparison</strong> to evaluate the 5C decision under the current assumptions.";
+    }
+    buildPriceSliders();
+    $("price-run")?.addEventListener("click", runPricing);
+    $("price-reset")?.addEventListener("click", resetPricing);
+
+    /* ============ PROGRAM 11 — SEGMENT COVERAGE (Q2) ============ */
+    const segTiers = [
+      { name: "Ultra-budget (<$150)", apple: false, samsung: true,  note: "Inexpensive Android — Apple absent" },
+      { name: "Budget ($150–$350)",   apple: false, samsung: true,  note: "Galaxy A / J series" },
+      { name: "Mid ($350–$600)",      apple: true,  samsung: true,  note: "5C aimed here; Galaxy mid-tier" },
+      { name: "Premium ($600–$800)",  apple: true,  samsung: true,  note: "iPhone 5s / Galaxy S" },
+      { name: "Flagship ($800+)",     apple: true,  samsung: true,  note: "Top iPhone / Galaxy Note phablet" }
+    ];
+    let segMode = "both";
+    function chipFor(t, showApple, showSamsung) {
+      const a = showApple ? `<span style="background:var(--apple); color:#fff; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">Apple</span>` : "";
+      const s = showSamsung ? `<span style="background:var(--samsung); color:#fff; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; margin-left:6px;">Samsung</span>` : "";
+      return (a + s) || `<span style="color:var(--soft); font-size:12px; font-style:italic;">no coverage</span>`;
+    }
+    function renderSegTiers() {
+      const box = $("seg-tiers");
+      if (!box) return;
+      box.innerHTML = "";
+      segTiers.forEach(t => {
+        const showApple = (segMode === "both" || segMode === "apple") && t.apple;
+        const showSamsung = (segMode === "both" || segMode === "samsung") && t.samsung;
+        const row = document.createElement("div");
+        row.style.cssText = "display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:10px 13px; margin-bottom:8px; border:1px solid var(--line); border-radius:9px; background:var(--panel); transition:all .3s ease;";
+        row.innerHTML = `<div><div style="font-weight:600; color:var(--text); font-size:15px;">${t.name}</div><div style="color:var(--muted); font-size:13px; margin-top:2px;">${t.note}</div></div><div style="white-space:nowrap;">${chipFor(t, showApple, showSamsung)}</div>`;
+        box.appendChild(row);
+      });
+      updateSegStatus();
+    }
+    function updateSegStatus() {
+      const appleCount = segTiers.filter(t => t.apple).length, samsungCount = segTiers.filter(t => t.samsung).length;
+      const status = $("seg-status");
+      if (!status) return;
+      if (segMode === "apple") status.innerHTML = `<strong>Apple</strong> covers <strong>${appleCount} of ${segTiers.length}</strong> tiers — premium and up. The two lowest tiers stay open.`;
+      else if (segMode === "samsung") status.innerHTML = `<strong>Samsung</strong> covers <strong>all ${samsungCount} of ${segTiers.length}</strong> tiers, ultra-budget to flagship phablet.`;
+      else status.innerHTML = `Side by side: Samsung's portfolio fills the <strong>two budget tiers Apple leaves open</strong> — the core of how it competes so effectively (Q2).`;
+    }
+    function animateSegCoverage() {
+      segMode = "both";
+      const box = $("seg-tiers");
+      if (!box) return;
+      box.innerHTML = "";
+      let i = 0;
+      const reveal = () => {
+        if (i >= segTiers.length) { updateSegStatus(); return; }
+        const t = segTiers[i];
+        const row = document.createElement("div");
+        row.style.cssText = "display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:10px 13px; margin-bottom:8px; border:1px solid var(--line); border-radius:9px; background:var(--panel); opacity:0; transform:translateY(10px); transition:all .35s ease;";
+        row.innerHTML = `<div><div style="font-weight:600; color:var(--text); font-size:15px;">${t.name}</div><div style="color:var(--muted); font-size:13px; margin-top:2px;">${t.note}</div></div><div style="white-space:nowrap;">${chipFor(t, t.apple, t.samsung)}</div>`;
+        box.appendChild(row);
+        requestAnimationFrame(() => { row.style.opacity = "1"; row.style.transform = "translateY(0)"; });
+        i++;
+        setTimeout(reveal, 360);
+      };
+      reveal();
+      if ($("seg-status")) $("seg-status").innerHTML = "Revealing each price tier… watch where only Samsung appears.";
+    }
+    $("seg-run")?.addEventListener("click", animateSegCoverage);
+    $("seg-apple")?.addEventListener("click", () => { segMode = "apple"; renderSegTiers(); });
+    $("seg-samsung")?.addEventListener("click", () => { segMode = "samsung"; renderSegTiers(); });
+    $("seg-both")?.addEventListener("click", () => { segMode = "both"; renderSegTiers(); });
+
+    /* ============ INIT ============ */
+    selectOrient(0);
+    renderMixSliders();
+    drawMixMap();
+    selectNeed(0);
+    renderPos();
+    renderGlob();
+    drawRadar();
+    drawAdapt();
+    runBop();
+    renderSegTiers();
+    go(0);
+  </script>
+</body>
+</html>
